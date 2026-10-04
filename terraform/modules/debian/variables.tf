@@ -33,3 +33,7 @@ variable "ci_ssh_key" {
 variable "cloud_image_id" {
   type = string
 }
+
+variable "ip_address" {
+  type = string
+}

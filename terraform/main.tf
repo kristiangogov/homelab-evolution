@@ -15,22 +15,24 @@ module "debian" {
     production = {
       vm_id       = 100
       target_node = var.target_node
+      ip_address  = "192.168.0.50/24"
     }
 
     dev = {
-      vm_id       = 101
+      vm_id      = 101
       target_node = var.target_node
+      ip_address = "192.168.0.51/24"
     }
   }
 
-  target_node        = each.value.target_node
-  datastore_id       = var.datastore_id
-  cloud_image_id     = proxmox_download_file.debian_cloud_image.id
+  target_node    = each.value.target_node
+  datastore_id   = var.datastore_id
+  cloud_image_id = proxmox_download_file.debian_cloud_image.id
+  ip_address     = each.value.ip_address
 
-
-  ci_user            = var.ci_user
-  ci_password        = var.ci_password
-  ci_ssh_key = var.ci_ssh_key
+  ci_user     = var.ci_user
+  ci_password = var.ci_password
+  ci_ssh_key  = var.ci_ssh_key
 
   vm_name = each.key
   vm_id   = each.value.vm_id
