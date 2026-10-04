@@ -40,6 +40,11 @@ variable "ci_user" {
   type = string
 }
 
+variable "ci_password" {
+  type = string
+  sensitive = true
+}
+
 variable "ci_ssh_key" {
   type = string
 }

@@ -1,0 +1,16 @@
+---
+- name: Initial host setup
+  hosts: "{{target}}"
+  become: true
+
+  vars_prompt:
+  - name: target
+    prompt: "Which host should this run against?"
+    private: false
+
+  roles:
+    - disk-expand
+    - update
+    - docker
+    - nfs-mount
+    - frigate-storage

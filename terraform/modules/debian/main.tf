@@ -1,12 +1,9 @@
-resource "proxmox_download_file" "fedora_cloud_image" {
+resource "proxmox_download_file" "debian_cloud_image" {
   content_type = "import"
   datastore_id = var.image_datastore_id
   node_name    = var.target_node
-  ## TODO! fix image source
-  ## Debian: https://cloud.debian.org/images/cloud/trixie/latest/debian-13-genericcloud-amd64.qcow2
-  ## Fedora: https://download.fedoraproject.org/pub/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-44-1.7.x86_64.qcow2
-  url          = "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-44-1.7.x86_64.qcow2"
-  file_name    = "fedora-cloud-44.qcow2"
+  url          = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-genericcloud-amd64.qcow2"
+  file_name    = "debian-13-trixie.qcow2"
 }
 
 resource "proxmox_virtual_environment_file" "vendor_data" {
@@ -16,31 +13,32 @@ resource "proxmox_virtual_environment_file" "vendor_data" {
 
   source_raw {
     data      = file("${path.module}/cloud-init/vendor-data.yaml")
-    file_name = "fedora-vendor-data.yaml"
+    file_name = "vendor-data.yaml"
   }
 }
 
-resource "proxmox_virtual_environment_vm" "fedora" {
+resource "proxmox_virtual_environment_vm" "debian" {
   name      = var.vm_name
   node_name = var.target_node
   vm_id     = var.vm_id
 
   agent {
     enabled = true
+    timeout = "2m"
   }
 
   cpu {
-    cores = 4
+    cores = 2
     type  = "host"
   }
 
   memory {
-    dedicated = 8096
+    dedicated = 4096
   }
 
   disk {
     datastore_id = var.datastore_id
-    file_id      = proxmox_download_file.fedora_cloud_image.id
+    file_id      = proxmox_download_file.debian_cloud_image.id
     interface    = "scsi0"
     size         = 20
   }

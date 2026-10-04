@@ -1,0 +1,12 @@
+---
+- name: Proxmox Terraform Init
+  hosts: "{{target}}"
+  become: true
+
+  vars_prompt:
+  - name: target
+    prompt: "Which host should this run against?"
+    private: false
+
+  roles:
+    - terraform-init

@@ -1,3 +1,3 @@
-output "vm_ip" {
-  value = module.fedora.vm_ip
-}
+# output "vm_ip" {
+#   value = module.fedora.vm_ip
+# }

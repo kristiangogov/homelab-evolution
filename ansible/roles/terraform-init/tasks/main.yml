@@ -1,0 +1,13 @@
+---
+- name: Storage
+  ansible.builtin.import_tasks: storage.yml
+  tags: [terraform_init, storage]
+
+- name: Role, user, ACL, token
+  ansible.builtin.import_tasks: access.yml
+  tags: [terraform_init, access]
+
+- name: Workstation prep
+  ansible.builtin.import_tasks: workstation.yml
+  when: terraform_init_workstation_prep | bool
+  tags: [terraform_init, workstation]

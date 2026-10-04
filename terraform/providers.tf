@@ -19,6 +19,7 @@ provider "proxmox" {
     node {
       name    = var.target_node
       address = var.node_ip
+      port    = 22
     }
   }
 }

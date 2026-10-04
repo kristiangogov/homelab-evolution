@@ -1,0 +1,25 @@
+---
+# Equivalent of ssh-copy-id root@<proxmox-ip>
+- name: Authorize workstation key for root on Proxmox
+  ansible.posix.authorized_key:
+    user: root
+    key: "{{ lookup('file', terraform_init_ssh_pubkey) }}"
+
+# Equivalent of ssh-add ~/.ssh/id_ed25519 (on the controller)
+- name: List keys in ssh-agent
+  ansible.builtin.command: ssh-add -L
+  delegate_to: localhost
+  become: false
+  run_once: true
+  register: terraform_init_agent_keys
+  changed_when: false
+  failed_when: terraform_init_agent_keys.rc not in [0, 1]
+  check_mode: false
+
+- name: Add key to ssh-agent
+  ansible.builtin.command:
+    argv: [ssh-add, "{{ terraform_init_ssh_pubkey | regex_replace('\\.pub$', '') }}"]
+  delegate_to: localhost
+  become: false
+  run_once: true
+  when: (lookup('file', terraform_init_ssh_pubkey).split()[1]) not in terraform_init_agent_keys.stdout

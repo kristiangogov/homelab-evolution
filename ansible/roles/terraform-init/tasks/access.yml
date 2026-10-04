@@ -1,0 +1,95 @@
+---
+- name: Read roles, users, ACLs
+  ansible.builtin.command: "pveum {{ item.cmd }} --output-format json"
+  loop:
+    - { key: roles, cmd: role list }
+    - { key: users, cmd: user list }
+    - { key: acls, cmd: acl list }
+  loop_control:
+    label: "{{ item.key }}"
+  register: terraform_init_state
+  changed_when: false
+  check_mode: false
+
+- name: Parse state
+  ansible.builtin.set_fact:
+    terraform_init_roles: "{{ (terraform_init_state.results[0].stdout | from_json) | selectattr('roleid', 'equalto', terraform_init_role) | list }}"
+    terraform_init_users: "{{ (terraform_init_state.results[1].stdout | from_json) | selectattr('userid', 'equalto', terraform_init_user) | list }}"
+    terraform_init_acls: >-
+      {{ (terraform_init_state.results[2].stdout | from_json)
+         | selectattr('path', 'equalto', '/')
+         | selectattr('ugid', 'equalto', terraform_init_user)
+         | selectattr('roleid', 'equalto', terraform_init_role) | list }}
+
+- name: Create role
+  ansible.builtin.command:
+    argv: [pveum, role, add, "{{ terraform_init_role }}", -privs, "{{ terraform_init_privs | join(' ') }}"]
+  when: terraform_init_roles | length == 0
+
+- name: Update role privileges
+  ansible.builtin.command:
+    argv: [pveum, role, modify, "{{ terraform_init_role }}", -privs, "{{ terraform_init_privs | join(' ') }}"]
+  when:
+    - terraform_init_roles | length > 0
+    - (terraform_init_roles[0].privs.split(',') | sort) != (terraform_init_privs | sort)
+
+- name: Create user
+  ansible.builtin.command:
+    argv: [pveum, user, add, "{{ terraform_init_user }}"]
+  when: terraform_init_users | length == 0
+
+- name: Grant role on /
+  ansible.builtin.command:
+    argv: [pveum, aclmod, /, -user, "{{ terraform_init_user }}", -role, "{{ terraform_init_role }}"]
+  when: terraform_init_acls | length == 0
+
+- name: Read tokens
+  ansible.builtin.command: "pveum user token list {{ terraform_init_user }} --output-format json"
+  register: terraform_init_token_list
+  changed_when: false
+  check_mode: false
+  failed_when: false
+
+- name: Check token existence
+  ansible.builtin.set_fact:
+    terraform_init_token_exists: >-
+      {{ terraform_init_token_list.rc == 0 and
+         (terraform_init_token_list.stdout | from_json
+          | selectattr('tokenid', 'equalto', terraform_init_token_name) | list | length > 0) }}
+
+- name: Remove token for rotation
+  ansible.builtin.command:
+    argv: [pveum, user, token, remove, "{{ terraform_init_user }}", "{{ terraform_init_token_name }}"]
+  when: terraform_init_token_exists and terraform_init_token_rotate | bool
+
+- name: Create API token (privsep 0)
+  ansible.builtin.command:
+    argv:
+      - pveum
+      - user
+      - token
+      - add
+      - "{{ terraform_init_user }}"
+      - "{{ terraform_init_token_name }}"
+      - -privsep
+      - "0"
+      - --output-format
+      - json
+  register: terraform_init_token_new
+  no_log: true
+  when: not terraform_init_token_exists or terraform_init_token_rotate | bool
+
+- name: Print token
+  ansible.builtin.debug:
+    msg:
+      - "token id : {{ (terraform_init_token_new.stdout | from_json)['full-tokenid'] }}"
+      - "secret   : {{ (terraform_init_token_new.stdout | from_json)['value'] }}"
+      - "provider : {{ (terraform_init_token_new.stdout | from_json)['full-tokenid'] }}={{ (terraform_init_token_new.stdout | from_json)['value'] }}"
+  when: terraform_init_token_new is not skipped
+
+- name: Token already exists
+  ansible.builtin.debug:
+    msg: >-
+      Token {{ terraform_init_user }}!{{ terraform_init_token_name }} already exists;
+      secret is only shown at creation. Set terraform_init_token_rotate=true to recreate.
+  when: terraform_init_token_new is skipped
