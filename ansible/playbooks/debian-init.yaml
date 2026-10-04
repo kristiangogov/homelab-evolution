@@ -11,3 +11,4 @@
   roles:
     - update-debian
     - docker-debian
+    - nfs-mount

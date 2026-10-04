@@ -1,5 +1,5 @@
 ---
-- name: Initial host setup
+- name: Initial Fedora config
   hosts: "{{target}}"
   become: true
 
@@ -9,8 +9,6 @@
     private: false
 
   roles:
-    - disk-expand
-    - update
-    - docker
+    - update-fedora
+    - docker-fedora
     - nfs-mount
-    - frigate-storage
