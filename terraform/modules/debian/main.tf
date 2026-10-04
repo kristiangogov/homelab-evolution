@@ -1,11 +1,3 @@
-resource "proxmox_download_file" "debian_cloud_image" {
-  content_type = "import"
-  datastore_id = var.image_datastore_id
-  node_name    = var.target_node
-  url          = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-genericcloud-amd64.qcow2"
-  file_name    = "debian-13-trixie.qcow2"
-}
-
 resource "proxmox_virtual_environment_file" "vendor_data" {
   content_type = "snippets"
   datastore_id = "local"
@@ -38,7 +30,7 @@ resource "proxmox_virtual_environment_vm" "debian" {
 
   disk {
     datastore_id = var.datastore_id
-    file_id      = proxmox_download_file.debian_cloud_image.id
+    file_id      = var.cloud_image_id
     interface    = "scsi0"
     size         = 20
   }

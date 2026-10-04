@@ -28,7 +28,7 @@ variable "image_datastore_id" {
 
 variable "vm_name" {
   type    = string
-  default = "fedora-test"
+  default = "test"
 }
 
 variable "vm_id" {

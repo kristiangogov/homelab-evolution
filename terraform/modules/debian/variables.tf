@@ -7,14 +7,9 @@ variable "datastore_id" {
   default = "local-lvm"
 }
 
-variable "image_datastore_id" {
-  type    = string
-  default = "local"
-}
-
 variable "vm_name" {
   type    = string
-  default = "fedora-test"
+  default = "test"
 }
 
 variable "vm_id" {
@@ -32,5 +27,9 @@ variable "ci_password" {
 }
 
 variable "ci_ssh_key" {
+  type = string
+}
+
+variable "cloud_image_id" {
   type = string
 }
