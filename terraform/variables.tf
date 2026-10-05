@@ -41,7 +41,7 @@ variable "ci_user" {
 }
 
 variable "ci_password" {
-  type = string
+  type      = string
   sensitive = true
 }
 
@@ -56,4 +56,18 @@ variable "ssh_username" {
 
 variable "node_ip" {
   type = string
+}
+
+variable "vms" {
+  type = map(object({
+    type        = string
+    vm_id       = number
+    ip_address  = optional(string)
+    target_node = optional(string)
+  }))
+}
+
+variable "enabled_vms" {
+  type    = set(string)
+  default = []
 }

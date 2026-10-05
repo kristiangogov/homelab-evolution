@@ -7,25 +7,36 @@ resource "proxmox_download_file" "debian_cloud_image" {
   file_name = "debian-13-trixie.qcow2"
 }
 
+locals {
+  enabled_vms = {
+    for name, vm in var.vms :
+    name => vm
+    if contains(var.enabled_vms, name)
+  }
+
+  debian_vms = {
+    for name, vm in local.enabled_vms :
+    name => vm
+    if vm.type == "debian"
+  }
+
+  fedora_vms = {
+    for name, vm in local.enabled_vms :
+    name => vm
+    if vm.type == "fedora"
+  }
+}
 
 module "debian" {
   source = "./modules/debian"
 
-  for_each = {
-    production = {
-      vm_id       = 100
-      target_node = var.target_node
-      ip_address  = "192.168.0.50/24"
-    }
+  for_each = local.debian_vms
 
-    dev = {
-      vm_id      = 101
-      target_node = var.target_node
-      ip_address = "192.168.0.51/24"
-    }
-  }
+  target_node = coalesce(
+    each.value.target_node,
+    var.target_node
+  )
 
-  target_node    = each.value.target_node
   datastore_id   = var.datastore_id
   cloud_image_id = proxmox_download_file.debian_cloud_image.id
   ip_address     = each.value.ip_address
@@ -38,16 +49,24 @@ module "debian" {
   vm_id   = each.value.vm_id
 }
 
-# module "fedora" {
-#   source = "./modules/fedora"
+module "fedora" {
+  source = "./modules/fedora"
 
-#   target_node        = var.target_node
-#   datastore_id       = var.datastore_id
-#   image_datastore_id = var.image_datastore_id
-#   vm_name            = "fedora-test"
-#   vm_id              = 444
-#   ci_user            = var.ci_user
-#   ci_password        = var.ci_password
-#   ci_ssh_key         = var.ci_ssh_key
-# }
+  for_each = local.fedora_vms
+
+  target_node = coalesce(
+    each.value.target_node,
+    var.target_node
+  )
+
+  datastore_id       = var.datastore_id
+  image_datastore_id = var.image_datastore_id
+
+  vm_name = each.key
+  vm_id   = each.value.vm_id
+
+  ci_user     = var.ci_user
+  ci_password = var.ci_password
+  ci_ssh_key  = var.ci_ssh_key
+}
 
