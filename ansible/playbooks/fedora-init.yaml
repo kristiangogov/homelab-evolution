@@ -11,4 +11,4 @@
   roles:
     - update-fedora
     - docker-fedora
-    - nfs-mount
+    - nfs-mount-fedora
