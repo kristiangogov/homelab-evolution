@@ -1,0 +1,8 @@
+---
+- name: Include OS-family update tasks
+  ansible.builtin.include_tasks: "{{ ansible_facts['os_family'] | lower }}.yaml"
+
+- name: Reboot if needed
+  ansible.builtin.reboot:
+    reboot_timeout: 600
+  when: reboot_required | bool

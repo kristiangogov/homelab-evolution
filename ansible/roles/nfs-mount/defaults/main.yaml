@@ -1,0 +1,2 @@
+---
+nfs_client_package: "{{ 'nfs-common' if ansible_facts['os_family'] == 'Debian' else 'nfs-utils' }}"

@@ -1,5 +1,5 @@
 ---
-- name: Initial Debian config
+- name: Initial OS config
   hosts: "{{target}}"
   become: true
 
@@ -9,6 +9,6 @@
     private: false
 
   roles:
-    - update-debian
-    - docker-debian
-    - nfs-mount-debian
+    - update
+    - docker
+    - nfs-mount

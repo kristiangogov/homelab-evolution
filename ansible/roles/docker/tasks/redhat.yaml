@@ -1,0 +1,12 @@
+---
+- name: Add Docker CE repo
+  ansible.builtin.get_url:
+    url: "{{ docker_repo_base }}/docker-ce.repo"
+    dest: /etc/yum.repos.d/docker-ce.repo
+    mode: "0644"
+
+- name: Point iptables to iptables-nft
+  community.general.alternatives:
+    name: iptables
+    path: /usr/bin/iptables-nft
+  notify: Restart docker
