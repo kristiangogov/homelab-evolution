@@ -62,7 +62,8 @@ variable "vms" {
   type = map(object({
     type        = string
     vm_id       = number
-    ip_address  = optional(string)
+    ip_address  = string
+    memory      = number
     target_node = optional(string)
   }))
 }

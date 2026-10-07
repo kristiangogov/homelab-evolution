@@ -34,3 +34,7 @@ variable "ci_password" {
 variable "ci_ssh_key" {
   type = string
 }
+
+variable "memory" {
+  type    = number
+}

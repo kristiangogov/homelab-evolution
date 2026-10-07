@@ -14,7 +14,6 @@ variable "vm_name" {
 
 variable "vm_id" {
   type    = number
-  default = 9000
 }
 
 variable "ci_user" {
@@ -36,4 +35,8 @@ variable "cloud_image_id" {
 
 variable "ip_address" {
   type = string
+}
+
+variable "memory" {
+  type    = number
 }

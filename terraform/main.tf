@@ -47,6 +47,8 @@ module "debian" {
 
   vm_name = each.key
   vm_id   = each.value.vm_id
+
+  memory = each.value.memory
 }
 
 module "fedora" {
@@ -68,5 +70,7 @@ module "fedora" {
   ci_user     = var.ci_user
   ci_password = var.ci_password
   ci_ssh_key  = var.ci_ssh_key
+
+  memory = each.value.memory
 }
 

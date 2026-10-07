@@ -25,7 +25,7 @@ resource "proxmox_virtual_environment_vm" "debian" {
   }
 
   memory {
-    dedicated = 4096
+    dedicated = var.memory
   }
 
   disk {

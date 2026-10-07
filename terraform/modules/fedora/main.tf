@@ -5,8 +5,8 @@ resource "proxmox_download_file" "fedora_cloud_image" {
   ## TODO! fix image source
   ## Debian: https://cloud.debian.org/images/cloud/trixie/latest/debian-13-genericcloud-amd64.qcow2
   ## Fedora: https://download.fedoraproject.org/pub/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-44-1.7.x86_64.qcow2
-  url          = "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-44-1.7.x86_64.qcow2"
-  file_name    = "fedora-cloud-44.qcow2"
+  url       = "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-44-1.7.x86_64.qcow2"
+  file_name = "fedora-cloud-44.qcow2"
 }
 
 resource "proxmox_virtual_environment_file" "vendor_data" {
@@ -35,7 +35,7 @@ resource "proxmox_virtual_environment_vm" "fedora" {
   }
 
   memory {
-    dedicated = 8096
+    dedicated = var.memory
   }
 
   disk {
