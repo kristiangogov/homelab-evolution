@@ -38,3 +38,7 @@ variable "ci_ssh_key" {
 variable "memory" {
   type    = number
 }
+
+variable "cores" {
+  type    = number
+}

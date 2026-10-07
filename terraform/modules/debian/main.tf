@@ -20,7 +20,7 @@ resource "proxmox_virtual_environment_vm" "debian" {
   }
 
   cpu {
-    cores = 2
+    cores = var.cores
     type  = "host"
   }
 

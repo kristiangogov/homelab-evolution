@@ -64,6 +64,7 @@ variable "vms" {
     vm_id       = number
     ip_address  = string
     memory      = number
+    cores       = number
     target_node = optional(string)
   }))
 }

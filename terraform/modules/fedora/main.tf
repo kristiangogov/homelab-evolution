@@ -30,7 +30,7 @@ resource "proxmox_virtual_environment_vm" "fedora" {
   }
 
   cpu {
-    cores = 4
+    cores = var.cores
     type  = "host"
   }
 

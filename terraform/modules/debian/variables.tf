@@ -40,3 +40,7 @@ variable "ip_address" {
 variable "memory" {
   type    = number
 }
+
+variable "cores" {
+  type    = number
+}
