@@ -7,11 +7,11 @@ A Proxmox-based homelab designed for reliably self-hosting services along with e
 Three Proxmox nodes run the workloads, and a dedicated NAS provides bulk storage.
 
 - **Stable stack:** long-lived services run as Docker Compose stacks in VMs.
-- **Experiments:** new tech is tried in disposable VMs and destroyed afterwards. Nothing in the stable set depends on them.
-- **Storage split:**
-  - *Local:* latency-sensitive or node-bound state, such as Frigate recordings or SQLite dependant applications.
-  - *NAS:* bulk and shared data, such as the Jellyfin media library.
-- **Everything is code:** VMs and stacks are defined declaratively and reproducible from the repo.
+- **Experiments:** new tech is tried in disposable VMs and destroyed afterwards.
+- **Storage:**
+  - *Local:* latency-sensitive or node-bound state, such as Frigate recordings or SQLite dependent applications.
+  - *NAS:* bulk and shared data, such as the Jellyfin media library and backups.
+- **Everything as code:** VMs and stacks are defined declaratively and reproducible from the repo.
 
 ## Status
 
