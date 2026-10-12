@@ -1,0 +1,5 @@
+---
+tailscale_auth_key: ""
+tailscale_hostname: "{{ inventory_hostname }}"
+tailscale_accept_dns: true
+tailscale_ssh: false

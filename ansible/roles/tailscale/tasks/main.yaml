@@ -1,0 +1,63 @@
+---
+- name: Check whether Tailscale is installed
+  ansible.builtin.stat:
+    path: /usr/bin/tailscale
+  register: tailscale_binary
+
+- name: Download official installer
+  ansible.builtin.get_url:
+    url: https://tailscale.com/install.sh
+    dest: /tmp/install-tailscale.sh
+    mode: "0755"
+  when: not tailscale_binary.stat.exists
+
+- name: Install Tailscale
+  ansible.builtin.command:
+    cmd: /bin/sh /tmp/install-tailscale.sh
+    creates: /usr/bin/tailscale
+  when: not tailscale_binary.stat.exists
+
+- name: Enable and start Tailscale
+  ansible.builtin.systemd_service:
+    name: tailscaled
+    enabled: true
+    state: started
+
+- name: Check Tailscale connection
+  ansible.builtin.command:
+    cmd: tailscale status --json
+  register: tailscale_status
+  changed_when: false
+  failed_when: false
+
+- name: Authenticate Tailscale
+  when: >-
+    tailscale_status.rc != 0 or
+    ((tailscale_status.stdout | from_json).BackendState
+    | default('')) != 'Running'
+  block:
+    - name: Write temporary auth key
+      ansible.builtin.copy:
+        content: "{{ tailscale_auth_key }}"
+        dest: /run/tailscale-authkey
+        owner: root
+        group: root
+        mode: "0600"
+      no_log: true
+
+    - name: Connect to tailnet
+      ansible.builtin.command:
+        argv:
+          - tailscale
+          - up
+          - "--auth-key=file:/run/tailscale-authkey"
+          - "--hostname={{ tailscale_hostname }}"
+          - "--accept-dns={{ tailscale_accept_dns | lower }}"
+          - "{{ '--ssh' if tailscale_ssh else '--ssh=false' }}"
+      no_log: true
+
+  always:
+    - name: Remove temporary auth key
+      ansible.builtin.file:
+        path: /run/tailscale-authkey
+        state: absent
