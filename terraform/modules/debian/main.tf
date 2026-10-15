@@ -32,7 +32,7 @@ resource "proxmox_virtual_environment_vm" "debian" {
     datastore_id = var.datastore_id
     file_id      = var.cloud_image_id
     interface    = "scsi0"
-    size         = 20
+    size         = 100
   }
 
   dynamic "hostpci" {

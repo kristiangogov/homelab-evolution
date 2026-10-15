@@ -1,0 +1,19 @@
+- name: Find deployed compose projects
+  ansible.builtin.find:
+    paths: /opt/homelab
+    patterns:
+      - docker-compose.yaml
+      - docker-compose.yml
+    recurse: true
+    depth: 2
+  register: compose_files
+
+- name: Run docker compose down on all services
+  ansible.builtin.command:
+    cmd: docker compose down
+    chdir: "{{ item }}"
+  loop: "{{ compose_files.files | map(attribute='path') | map('dirname') | unique | sort | list }}"
+  loop_control:
+    label: "{{ item | basename }}"
+  register: compose_down
+  changed_when: "'Removed' in compose_down.stderr or 'Stopped' in compose_down.stderr"
