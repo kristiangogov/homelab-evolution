@@ -35,6 +35,15 @@ resource "proxmox_virtual_environment_vm" "debian" {
     size         = 20
   }
 
+  dynamic "hostpci" {
+    for_each = var.gpu_mapping != null ? [var.gpu_mapping] : []
+    content {
+      device  = "hostpci0"
+      mapping = hostpci.value
+      # pcie = true
+    }
+  }
+
   network_device {
     bridge = "vmbr0"
   }

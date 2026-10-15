@@ -1,0 +1,62 @@
+---
+- name: Read PCI device identifiers from sysfs
+  ansible.builtin.command:
+    argv:
+      - cat
+      - "/sys/bus/pci/devices/{{ terraform_init_pci_device }}/vendor"
+      - "/sys/bus/pci/devices/{{ terraform_init_pci_device }}/device"
+      - "/sys/bus/pci/devices/{{ terraform_init_pci_device }}/subsystem_vendor"
+      - "/sys/bus/pci/devices/{{ terraform_init_pci_device }}/subsystem_device"
+  register: terraform_init_pci_ids
+  changed_when: false
+  check_mode: false
+
+- name: Read IOMMU group
+  ansible.builtin.command:
+    argv: [readlink, -f, "/sys/bus/pci/devices/{{ terraform_init_pci_device }}/iommu_group"]
+  register: terraform_init_pci_iommu
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: Read existing PCI mappings
+  ansible.builtin.command: pvesh get /cluster/mapping/pci --output-format json
+  register: terraform_init_pci_maps
+  changed_when: false
+  check_mode: false
+
+- name: Build mapping spec
+  ansible.builtin.set_fact:
+    terraform_init_pci_spec: >-
+      node={{ ansible_facts['hostname'] }},path={{ terraform_init_pci_device }},id={{ _l[0][2:] }}:{{ _l[1][2:] }},subsystem-id={{ _l[2][2:] }}:{{ _l[3][2:] }}{{
+      (',iommugroup=' ~ (terraform_init_pci_iommu.stdout | basename)) if terraform_init_pci_iommu.rc == 0 and terraform_init_pci_iommu.stdout | length > 0 else '' }}
+    terraform_init_pci_existing: >-
+      {{ (terraform_init_pci_maps.stdout | from_json)
+         | selectattr('id', 'equalto', terraform_init_pci_mapping) | list }}
+  vars:
+    _l: "{{ terraform_init_pci_ids.stdout_lines }}"
+
+- name: Create PCI mapping
+  ansible.builtin.command:
+    argv:
+      - pvesh
+      - create
+      - /cluster/mapping/pci
+      - --id
+      - "{{ terraform_init_pci_mapping }}"
+      - --map
+      - "{{ terraform_init_pci_spec }}"
+  when: terraform_init_pci_existing | length == 0
+
+- name: Update PCI mapping
+  ansible.builtin.command:
+    argv:
+      - pvesh
+      - set
+      - "/cluster/mapping/pci/{{ terraform_init_pci_mapping }}"
+      - --map
+      - "{{ terraform_init_pci_spec }}"
+  when:
+    - terraform_init_pci_existing | length > 0
+    - (terraform_init_pci_spec.split(',') | sort) not in
+      (terraform_init_pci_existing[0].map | default([]) | map('split', ',') | map('sort') | list)

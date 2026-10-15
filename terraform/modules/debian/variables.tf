@@ -13,7 +13,7 @@ variable "vm_name" {
 }
 
 variable "vm_id" {
-  type    = number
+  type = number
 }
 
 variable "ci_user" {
@@ -38,9 +38,14 @@ variable "ip_address" {
 }
 
 variable "memory" {
-  type    = number
+  type = number
 }
 
 variable "cores" {
-  type    = number
+  type = number
+}
+
+variable "gpu_mapping" {
+  type    = string
+  default = null
 }

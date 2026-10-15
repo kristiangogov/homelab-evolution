@@ -3,7 +3,7 @@ resource "proxmox_download_file" "debian_cloud_image" {
   datastore_id = "local"
   node_name    = "elitedesk"
 
-  url       = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-genericcloud-amd64.qcow2"
+  url       = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-amd64.qcow2"
   file_name = "debian-13-trixie.qcow2"
 }
 
@@ -48,8 +48,9 @@ module "debian" {
   vm_name = each.key
   vm_id   = each.value.vm_id
 
-  memory = each.value.memory
-  cores  = each.value.cores
+  memory     = each.value.memory
+  cores      = each.value.cores
+  gpu_mapping = each.value.gpu_mapping
 }
 
 module "fedora" {

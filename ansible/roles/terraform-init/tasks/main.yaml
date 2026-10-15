@@ -1,0 +1,18 @@
+---
+- name: Storage
+  ansible.builtin.import_tasks: storage.yaml
+  tags: [terraform_init, storage]
+
+- name: Role, user, ACL, token
+  ansible.builtin.import_tasks: access.yaml
+  tags: [terraform_init, access]
+
+- name: Workstation prep
+  ansible.builtin.import_tasks: workstation.yaml
+  when: terraform_init_workstation_prep | bool
+  tags: [terraform_init, workstation]
+
+- name: GPU PCI mapping
+  ansible.builtin.import_tasks: gpu.yaml
+  when: terraform_init_pci_mapping | length > 0
+  tags: [terraform_init, gpu]

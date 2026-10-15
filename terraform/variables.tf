@@ -66,6 +66,7 @@ variable "vms" {
     memory      = number
     cores       = number
     target_node = optional(string)
+    gpu_mapping = optional(string)
   }))
 }
 

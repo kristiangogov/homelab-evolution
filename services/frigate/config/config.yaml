@@ -1,0 +1,74 @@
+mqtt:
+  enabled: true
+  host: mosquitto
+  port: 1883
+  topic_prefix: frigate
+  client_id: frigate
+
+detectors:
+  ov:
+    # type: openvino
+    # device: GPU
+
+    ### For testing only.
+    type: cpu
+    num_threads: 2
+
+# model:
+#   path: /openvino-model/ssdlite_mobilenet_v2.xml
+#   width: 300
+#   height: 300
+#   input_tensor: nhwc
+#   input_pixel_format: bgr
+#   labelmap_path: /openvino-model/coco_91cl_bkgr.txt
+
+record:
+  enabled: true
+  retain:
+    days: 3
+    mode: motion
+  events:
+    retain:
+      default: 14
+      mode: active_objects
+
+snapshots:
+  enabled: true
+  retain:
+    default: 14
+
+detect:
+  enabled: true
+
+cameras:
+  yard:
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:{FRIGATE_YARD_PASSWORD}@192.168.0.202:554/cam/realmonitor?channel=1&subtype=0&unicast=true&proto=Onvif
+          roles:
+            - detect
+            - record
+    detect:
+      width: 1280
+      height: 720
+      fps: 3
+    objects:
+      track:
+        - person
+        - dog
+
+  gate:
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:{FRIGATE_GATE_PASSWORD}@192.168.0.201:554/cam/realmonitor?channel=1&subtype=0&unicast=true&proto=Onvif
+          roles:
+            - detect
+            - record
+    detect:
+      width: 1280
+      height: 720
+      fps: 3
+    objects:
+      track:
+        - person
+        - dog

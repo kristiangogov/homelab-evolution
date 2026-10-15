@@ -28,6 +28,7 @@ terraform_init_privs:
   - VM.PowerMgmt
   - VM.Console
   - VM.GuestAgent.Audit
+  - Mapping.Use
 
 terraform_init_user: terraform@pve
 terraform_init_token_name: provider
@@ -37,3 +38,6 @@ terraform_init_token_rotate: false
 # Workstation prep (runs against the controller / Proxmox root authorized_keys)
 terraform_init_workstation_prep: true
 terraform_init_ssh_pubkey: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519.pub"
+
+terraform_init_pci_mapping: igpu
+terraform_init_pci_device: "0000:00:02.0"
