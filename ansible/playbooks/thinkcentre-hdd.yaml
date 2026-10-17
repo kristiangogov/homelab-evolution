@@ -1,0 +1,7 @@
+- hosts: thinkcentre
+  roles: [pve-passthrough-disk]
+
+- hosts: production
+  become: true
+  roles:
+    - frigate-storage

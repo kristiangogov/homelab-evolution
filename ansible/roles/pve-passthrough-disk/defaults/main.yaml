@@ -1,0 +1,3 @@
+pve_vmid: 100
+pve_disk_slot: scsi1
+pve_disk_id: /dev/disk/by-id/ata-WDC_WD6400BPVT-60HXZT1_WD-WXR1AB061454

@@ -1,0 +1,9 @@
+- name: Read VM config
+  ansible.builtin.command: "qm config {{ pve_vmid }}"
+  register: vm_config
+  changed_when: false
+
+- name: Attach recordings HDD
+  ansible.builtin.command: >
+    qm set {{ pve_vmid }} --{{ pve_disk_slot }} {{ pve_disk_id }},backup=0
+  when: (pve_disk_slot ~ ':') not in vm_config.stdout

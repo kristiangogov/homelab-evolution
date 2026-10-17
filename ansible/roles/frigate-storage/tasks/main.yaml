@@ -1,26 +1,36 @@
-- name: Check current filesystem on /dev/sda1
-  ansible.builtin.command:
-    cmd: blkid -o value -s TYPE /dev/sda1
-  register: current_fs
+- name: Wait for the disk to appear in the guest
+  ansible.builtin.command: "blkid -U {{ frigate_storage_uuid }}"
+  register: blk
   changed_when: false
-  failed_when: false
+  retries: 6
+  delay: 5
+  until: blk.rc == 0
 
-- name: Format /dev/sda1 as ext4
-  community.general.filesystem:
-    fstype: ext4
-    dev: /dev/sda1
-    force: true
-  when: current_fs.stdout != "ext4"
-
-- name: Ensure Frigate storage mount point exists
+- name: Ensure docker drop-in dir
   ansible.builtin.file:
-    path: /mnt/frigate-storage
+    path: /etc/systemd/system/docker.service.d
     state: directory
+    mode: "0755"
 
-- name: Mount Frigate storage
+- name: Ensure mount point exists
+  ansible.builtin.file:
+    path: "{{ frigate_storage_path }}"
+    state: directory
+    mode: "0755"
+
+- name: Mount recordings disk
   ansible.posix.mount:
-    src: /dev/sda1
-    path: /mnt/frigate-storage
+    src: "UUID={{ frigate_storage_uuid }}"
+    path: "{{ frigate_storage_path }}"
     fstype: ext4
-    opts: defaults,noatime
+    opts: defaults,noatime,nofail
     state: mounted
+
+- name: Make docker wait for the mount
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/docker.service.d/10-frigate-storage.conf
+    content: |
+      [Unit]
+      RequiresMountsFor={{ frigate_storage_path }}
+    mode: "0644"
+  notify: Reload systemd
