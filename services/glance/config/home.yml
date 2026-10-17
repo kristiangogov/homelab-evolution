@@ -23,7 +23,9 @@
         - type: bookmarks
           groups:
             - links:
-                - title: Proxmox
+                - title: Proxmox ThinkCentre
+                  url: https://192.168.0.251:8006/
+                - title: Proxmox EliteDesk
                   url: https://192.168.0.250:8006/
                 - title: TrueNAS
                   url: https://truenas
@@ -71,14 +73,14 @@
               icon: si:uptimekuma
               allow-insecure: true
             - title: Dozzle
-              url: http://thinkcentre:8081
+              url: http://production:8081
               icon: si:docker
             - title: Frigate
-              url: https://thinkcentre:8971
+              url: https://production:8971
               icon: si:frigate
               allow-insecure: true
             - title: Home Assistant
-              url: http://thinkcentre:8123
+              url: http://production:8123
               icon: si:homeassistant          
             - title: Kaneo
               url: https://kaneo.gogov.dev
