@@ -20,8 +20,9 @@ Three Proxmox nodes run the workloads, and a dedicated NAS provides bulk storage
 | Ansible Proxmox initial config | Initial test done |
 | Terraform VM provisioning | Initial test done |
 | Ansible Docker Compose deploy | Initial test done |
-| Migration from bare-metal server | Docmost instance tested and DB Restored successfully |
-| Kubernetes | After Compose stack is fully migrated |
+| Migration from bare-metal server | Successful |
+| Complete rework of backup strategy | In progress | 
+| Kubernetes | Soon |
 
 ## Hardware
 
