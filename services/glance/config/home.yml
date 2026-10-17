@@ -74,13 +74,16 @@
               allow-insecure: true
             - title: Dozzle
               url: http://production:8081
+              check-url: http://192.168.0.10:8081
               icon: si:docker
             - title: Frigate
               url: https://production:8971
+              check-url: https://192.168.0.10:8971
               icon: si:frigate
               allow-insecure: true
             - title: Home Assistant
               url: http://production:8123
+              check-url: http://192.168.0.10:8123
               icon: si:homeassistant          
             - title: Kaneo
               url: https://kaneo.gogov.dev
