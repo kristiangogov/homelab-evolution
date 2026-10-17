@@ -12,3 +12,5 @@
     - update
     - docker
     - nfs-mount
+    - role: frigate-storage
+      when: inventory_hostname == "thinkcentre"
