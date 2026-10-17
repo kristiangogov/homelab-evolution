@@ -5,6 +5,7 @@ resource "proxmox_download_file" "debian_cloud_image" {
 
   url       = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-amd64.qcow2"
   file_name = "debian-13-trixie.qcow2"
+  overwrite = false
 }
 
 locals {
