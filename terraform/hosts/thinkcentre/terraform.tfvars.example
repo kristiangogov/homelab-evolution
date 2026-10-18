@@ -1,0 +1,11 @@
+proxmox_endpoint  = "https://10.10.10.11:8006/api2/json"
+proxmox_api_token = "terraform@pve!provider=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+proxmox_insecure  = true
+
+target_node  = "pve-tc"
+datastore_id = "local-lvm"
+vm_name      = "fedora-test"
+vm_id        = 9000
+
+ci_user    = "user"
+ci_ssh_key = "ssh-ed25519 AAAA..."

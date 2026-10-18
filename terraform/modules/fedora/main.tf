@@ -42,7 +42,7 @@ resource "proxmox_virtual_environment_vm" "fedora" {
     datastore_id = var.datastore_id
     file_id      = proxmox_download_file.fedora_cloud_image.id
     interface    = "scsi0"
-    size         = 20
+    size         = var.disk_size
   }
 
   network_device {

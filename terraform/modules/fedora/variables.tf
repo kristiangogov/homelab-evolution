@@ -42,3 +42,7 @@ variable "memory" {
 variable "cores" {
   type    = number
 }
+
+variable "disk_size" {
+  type        = number
+}

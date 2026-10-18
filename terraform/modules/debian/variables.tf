@@ -45,6 +45,10 @@ variable "cores" {
   type = number
 }
 
+variable "disk_size" {
+  type        = number
+}
+
 variable "gpu_mapping" {
   type    = string
   default = null

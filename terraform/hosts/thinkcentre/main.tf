@@ -29,7 +29,7 @@ locals {
 }
 
 module "debian" {
-  source = "./modules/debian"
+  source = "../../modules/debian"
 
   for_each = local.debian_vms
 
@@ -52,10 +52,11 @@ module "debian" {
   memory      = each.value.memory
   cores       = each.value.cores
   gpu_mapping = each.value.gpu_mapping
+  disk_size   = each.value.disk_size
 }
 
 module "fedora" {
-  source = "./modules/fedora"
+  source = "../../modules/fedora"
 
   for_each = local.fedora_vms
 
@@ -74,7 +75,8 @@ module "fedora" {
   ci_password = var.ci_password
   ci_ssh_key  = var.ci_ssh_key
 
-  memory = each.value.memory
-  cores  = each.value.cores
+  memory    = each.value.memory
+  cores     = each.value.cores
+  disk_size = each.value.disk_size
 }
 
