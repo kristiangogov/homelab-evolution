@@ -1,7 +1,7 @@
 resource "proxmox_download_file" "debian_cloud_image" {
   content_type = "import"
   datastore_id = "local"
-  node_name    = "thinkcentre"
+  node_name    = "elitedesk"
 
   url       = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-amd64.qcow2"
   file_name = "debian-13-trixie.qcow2"
@@ -52,6 +52,7 @@ module "debian" {
   memory      = each.value.memory
   cores       = each.value.cores
   gpu_mapping = each.value.gpu_mapping
+  disk_size   = each.value.disk_size
 }
 
 module "fedora" {
@@ -74,7 +75,8 @@ module "fedora" {
   ci_password = var.ci_password
   ci_ssh_key  = var.ci_ssh_key
 
-  memory = each.value.memory
-  cores  = each.value.cores
+  memory    = each.value.memory
+  cores     = each.value.cores
+  disk_size = each.value.disk_size
 }
 

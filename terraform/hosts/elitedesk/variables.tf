@@ -65,6 +65,7 @@ variable "vms" {
     ip_address  = string
     memory      = number
     cores       = number
+    disk_size   = number
     target_node = optional(string)
     gpu_mapping = optional(string)
   }))
