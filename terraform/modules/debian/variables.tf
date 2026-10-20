@@ -46,7 +46,7 @@ variable "cores" {
 }
 
 variable "disk_size" {
-  type        = number
+  type = number
 }
 
 variable "gpu_mapping" {

@@ -36,13 +36,13 @@ variable "ci_ssh_key" {
 }
 
 variable "memory" {
-  type    = number
+  type = number
 }
 
 variable "cores" {
-  type    = number
+  type = number
 }
 
 variable "disk_size" {
-  type        = number
+  type = number
 }
