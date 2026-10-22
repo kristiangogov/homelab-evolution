@@ -1,5 +1,5 @@
 ---
-name: Testing
+name: testing
 description: Validate this IaC repo - Ansible syntax checks, Terraform fmt/validate, shell script checks, and docker compose config validation. Use when the user asks to test, validate, lint, or verify changes.
 ---
 
