@@ -13,7 +13,6 @@ A Proxmox-based homelab designed for reliably self-hosting services along with e
 |------|-------|
 | Migration from bare-metal server | Done |
 | Rework of backup strategy and targets | In progress | 
-| Observability | Makeshift Dozzle, Uptime Kuma (on NAS) and Glance |
 | Kubernetes | Soon. K3s with Cilium and NFS CSI planned. |
 
 ## Hardware
@@ -44,7 +43,14 @@ A Proxmox-based homelab designed for reliably self-hosting services along with e
 | ![Ansible](https://cdn.simpleicons.org/ansible/f00?size=32) | Ansible | Automation tool for configuration |
 | <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/cloudflare-zero-trust.png" width="32" height="32" />  | Cloudflare | Zero-Trust Tunnel for exposing services securely on the internet |
 | ![Tailscale](https://cdn.simpleicons.org/tailscale?size=32) | Tailscale | Private mesh network for services not exposed publicly |
+
+
+## Monitoring
+
+| Logo | Name | Description |
+|:-:|-----|-------------|
 | <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/dozzle.webp" width="32" height="32" /> | Dozzle | Web-based log viewer for Docker | 
+| <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/beszel-light.svg" width="32" height="32" /> | Beszel | Lightweight server monitoring | 
 
 
 ## Services

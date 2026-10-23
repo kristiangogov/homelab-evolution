@@ -1,0 +1,10 @@
+---
+- name: Install beszel agent
+  ansible.builtin.shell: |
+    curl -sL https://get.beszel.dev -o /tmp/install-agent.sh
+    sh /tmp/install-agent.sh -k "{{ beszel_key }}"
+    rm -f /tmp/install-agent.sh
+  args:
+    creates: /opt/beszel-agent/beszel-agent
+    stdin: "y"
+  no_log: true
