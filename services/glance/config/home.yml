@@ -67,6 +67,11 @@
           title: Services
           cache: 1m
           sites:
+            - title: Beszel
+              url: http://production:8090
+              check-url: http://192.168.0.10:8090
+              icon: di:beszel 
+              allow-insecure: true
             - title: Uptime Kuma
               url: http://truenas:31050/dashboard
               check-url: http://192.168.0.104:31050/dashboard
@@ -102,9 +107,6 @@
             - title: SilverBullet.md
               url: https://notes.gogov.dev
               icon: si:thanos
-            - title: Open WebUI
-              url: https://ai.gogov.dev
-              icon: si:await
             - title: Jellyfin
               url: https://jellyfin.gogov.dev
               icon: si:jellyfin
