@@ -1,11 +1,52 @@
-proxmox_endpoint  = "https://10.10.10.11:8006/api2/json"
-proxmox_api_token = "terraform@pve!provider=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+proxmox_endpoint  = ""
+proxmox_api_token = ""
 proxmox_insecure  = true
 
-target_node  = "pve-tc"
-datastore_id = "local-lvm"
-vm_name      = "fedora-test"
-vm_id        = 9000
+# User vars
+ci_user     = ""
+ci_password = ""
+ci_ssh_key  = "ssh-ed25519 ..."
 
-ci_user    = "user"
-ci_ssh_key = "ssh-ed25519 AAAA..."
+# Config ThinkCentre
+target_node        = ""
+datastore_id       = "local-lvm"
+image_datastore_id = "local"
+node_ip            = ""
+
+# Live
+vms = {
+  production = {
+    type        = "debian"
+    vm_id       = 100
+    ip_address  = ""
+    memory      = 12288
+    cores       = 2
+    disk_size   = 200
+    gpu_mapping = "igpu"
+  }
+
+  dev = {
+    type       = "debian"
+    vm_id      = 101
+    ip_address = ""
+    memory     = 2048
+    cores      = 1
+    disk_size  = 20
+  }
+
+  fedora-test = {
+    type       = "fedora"
+    vm_id      = 444
+    ip_address = ""
+    memory     = 4096
+    cores      = 1
+    disk_size  = 20
+
+  }
+}
+
+enabled_vms = [
+  "production",
+  # "dev",
+  # "fedora-test"
+]
