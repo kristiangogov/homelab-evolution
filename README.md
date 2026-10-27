@@ -12,8 +12,9 @@ A Proxmox-based homelab designed for reliably self-hosting services along with e
 | Area | State |
 |------|-------|
 | Migration from bare-metal server | Done |
+| Docker Services | Fully operational |
 | Rework of backup strategy and targets | In progress | 
-| Kubernetes | Soon. K3s with Cilium and NFS CSI planned. |
+| Kubernetes | Testing phase |
 
 ## Hardware
 
@@ -40,7 +41,9 @@ A Proxmox-based homelab designed for reliably self-hosting services along with e
 | ![Debian](https://cdn.simpleicons.org/debian?size=32) | Debian | Main Linux distribution used |
 | ![Fedora](https://cdn.simpleicons.org/fedora?size=32) | Fedora Server | Alternative Linux distribution used |
 | ![TrueNAS](https://cdn.simpleicons.org/truenas?size=32) | TrueNAS | NAS OS |
+| ![K3s](https://cdn.simpleicons.org/k3s?size=32) | K3s | Lightweight Kubernetes engine |
 | ![Ansible](https://cdn.simpleicons.org/ansible/f00?size=32) | Ansible | Automation tool for configuration |
+| ![Terraform](https://cdn.simpleicons.org/terraform?size=32) | Terraform | Provisioning infrastructure declaratively |
 | <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/cloudflare-zero-trust.png" width="32" height="32" />  | Cloudflare | Zero-Trust Tunnel for exposing services securely on the internet |
 | ![Tailscale](https://cdn.simpleicons.org/tailscale?size=32) | Tailscale | Private mesh network for services not exposed publicly |
 
@@ -51,6 +54,7 @@ A Proxmox-based homelab designed for reliably self-hosting services along with e
 |:-:|-----|-------------|
 | <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/dozzle.webp" width="32" height="32" /> | Dozzle | Web-based log viewer for Docker | 
 | <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/beszel-light.svg" width="32" height="32" /> | Beszel | Lightweight server monitoring | 
+| ![UptimeKUMA](https://cdn.simpleicons.org/uptimekuma?size=32) | Uptime Kuma | Alternative monitoring running as TrueNAS App |
 
 
 ## Services
