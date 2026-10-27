@@ -5,8 +5,8 @@
 
 - name: Load service-specific vars if present
   ansible.builtin.include_vars:
-    file: "{{ playbook_dir }}/../../services/{{ service }}/vars.yaml"
-  when: (playbook_dir + '/../../services/' + service + '/vars.yaml') is exists
+    file: "{{ playbook_dir }}/../../docker/{{ service }}/vars.yaml"
+  when: (playbook_dir + '/../../docker/' + service + '/vars.yaml') is exists
 
 - name: Ensure remote service directory exists
   ansible.builtin.file:
@@ -16,7 +16,7 @@
 
 - name: Copy service files to host
   ansible.builtin.copy:
-    src: "{{ playbook_dir }}/../../services/{{ service }}/"
+    src: "{{ playbook_dir }}/../../docker/{{ service }}/"
     dest: "/opt/homelab/{{ service }}/"
     mode: preserve
 
