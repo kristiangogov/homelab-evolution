@@ -1,0 +1,6 @@
+---
+- import_playbook: base/os-update.yaml
+- import_playbook: base/tailscale.yaml
+- import_playbook: base/beszel-agent.yaml
+- import_playbook: k3s/k3s-setup.yaml
+- import_playbook: k3s/k3s-kubeconfig.yaml

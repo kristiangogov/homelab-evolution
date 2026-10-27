@@ -1,0 +1,39 @@
+---
+- name: Check for existing kubeconfig
+  ansible.builtin.stat:
+    path: "{{ lookup('env', 'HOME') }}/.kube/config"
+  delegate_to: localhost
+  become: false
+  run_once: true
+  register: existing_kubeconfig
+
+- name: Backup existing kubeconfig
+  ansible.builtin.copy:
+    src: "{{ lookup('env', 'HOME') }}/.kube/config"
+    dest: "{{ lookup('env', 'HOME') }}/.kube/config.{{ ansible_date_time.iso8601_basic_short }}.bak"
+    mode: "0600"
+    remote_src: true
+  delegate_to: localhost
+  become: false
+  run_once: true
+  when: existing_kubeconfig.stat.exists
+
+- name: Wait for kubeconfig
+  ansible.builtin.wait_for:
+    path: /etc/rancher/k3s/k3s.yaml
+
+- name: Fetch kubeconfig to ~/.kube/config
+  ansible.builtin.fetch:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: "{{ lookup('env', 'HOME') }}/.kube/config"
+    flat: true
+  run_once: true
+
+- name: Point kubeconfig at server IP
+  ansible.builtin.replace:
+    path: "{{ lookup('env', 'HOME') }}/.kube/config"
+    regexp: 'https://127\.0\.0\.1:6443'
+    replace: "https://{{ ansible_default_ipv4.address }}:6443"
+  delegate_to: localhost
+  become: false
+  run_once: true
