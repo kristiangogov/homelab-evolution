@@ -9,3 +9,8 @@ nas_mounts:
     mount_point: /mnt/nas_storage
   - export: /mnt/data/backup
     mount_point: /mnt/nas_backup  
+
+
+infisical_url: http://production:1234
+infisical_project_id: 4cf1ae60-3e55-48be-9960-8d7bf80febad
+infisical_env: prod
