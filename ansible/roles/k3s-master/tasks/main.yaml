@@ -1,6 +1,22 @@
 ---
+- name: Create k3s config dir
+  ansible.builtin.file:
+    path: /etc/rancher/k3s
+    state: directory
+    mode: "0755"
+
+- name: Write k3s config
+  ansible.builtin.copy:
+    dest: /etc/rancher/k3s/config.yaml
+    mode: "0600"
+    content: |
+      disable:
+        - traefik
+      write-kubeconfig-mode: "0644"
+  notify: Restart k3s
+
 - name: Install K3s Server
   ansible.builtin.shell: >
-    curl -sfL https://get.k3s.io | sh -
+    curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION={{ k3s_version }} sh -
   args:
     creates: /usr/local/bin/k3s

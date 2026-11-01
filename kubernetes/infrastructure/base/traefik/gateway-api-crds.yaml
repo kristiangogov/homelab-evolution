@@ -1,0 +1,3 @@
+---
+curl -Lo infrastructure/base/traefik/gateway-api-crds.yaml \
+  https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.3/standard-install.yaml
