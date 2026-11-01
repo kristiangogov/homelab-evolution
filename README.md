@@ -14,7 +14,8 @@ A Proxmox-based homelab designed for reliably self-hosting services along with e
 | Migration from bare-metal server | Done |
 | Docker Services | Fully operational |
 | Rework of backup strategy and targets | In progress | 
-| Kubernetes | Testing phase |
+| Kubernetes | K3s, Traefik, SOPS, Flux, Infisical setup |
+| Kubernetes Live | Testing docker -> Kubernetes |
 
 ## Hardware
 
@@ -46,6 +47,7 @@ A Proxmox-based homelab designed for reliably self-hosting services along with e
 | ![Terraform](https://cdn.simpleicons.org/terraform?size=32) | Terraform | Provisioning infrastructure declaratively |
 | <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/cloudflare-zero-trust.png" width="32" height="32" />  | Cloudflare | Zero-Trust Tunnel for exposing services securely on the internet |
 | ![Tailscale](https://cdn.simpleicons.org/tailscale?size=32) | Tailscale | Private mesh network for services not exposed publicly |
+| <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/infisical.svg" width="32" height="32" />  | Infisical | Secret management platform |
 
 
 ## Monitoring
