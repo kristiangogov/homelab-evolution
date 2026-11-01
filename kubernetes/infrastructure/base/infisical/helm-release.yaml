@@ -34,7 +34,7 @@ spec:
     infisical:
       image:
         repository: infisical/infisical
-        tag: "v0.167.4"                  # release tag from Docker Hub, not latest
+        tag: "v0.167.4"
     postgresql:
       enabled: false
     redis:
