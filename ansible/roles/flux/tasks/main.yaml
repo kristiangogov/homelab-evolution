@@ -17,7 +17,6 @@
   when: flux_check.rc != 0
   failed_when: false
   
-
 - name: Create GitHub credentials secret
   shell: |
     kubectl create secret generic flux-system \
@@ -29,6 +28,7 @@
     KUBECONFIG: /etc/rancher/k3s/k3s.yaml
   run_once: true
   when: flux_check.rc != 0
+  no_log: true
 
 - name: Create sops-age secret for decryption
   shell: |
