@@ -6,3 +6,4 @@ resources:
   - gateway-api-crds.yaml
   - helm-repository.yaml
   - helm-release.yaml
+  - certificate.yaml
