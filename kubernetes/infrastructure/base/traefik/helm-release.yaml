@@ -34,3 +34,10 @@ spec:
         matchRule: Host(`traefik.internal.gogov.dev`)
         entryPoints: [websecure]
         tls: {}
+    ports:
+      web:
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
