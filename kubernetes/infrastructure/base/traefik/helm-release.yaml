@@ -32,4 +32,5 @@ spec:
       dashboard:
         enabled: true
         matchRule: Host(`traefik.internal.gogov.dev`)
-        entryPoints: [web]
+        entryPoints: [websecure]
+        tls: {}
