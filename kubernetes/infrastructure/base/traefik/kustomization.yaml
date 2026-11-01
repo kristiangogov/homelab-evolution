@@ -6,3 +6,4 @@ resources:
   - gateway-api-crds.yaml
   - helmrepository.yaml
   - helmrelease.yaml
+  - ingressroute.yaml
