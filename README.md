@@ -43,12 +43,13 @@ A Proxmox-based homelab designed for reliably self-hosting services along with e
 | ![Fedora](https://cdn.simpleicons.org/fedora?size=32) | Fedora Server | Alternative Linux distribution used |
 | ![TrueNAS](https://cdn.simpleicons.org/truenas?size=32) | TrueNAS | NAS OS |
 | ![K3s](https://cdn.simpleicons.org/k3s?size=32) | K3s | Lightweight Kubernetes engine |
-| ![Ansible](https://cdn.simpleicons.org/ansible/f00?size=32) | Ansible | Automation tool for configuration |
+| ![Ansible](https://cdn.simpleicons.org/ansible/f00?size=32) | Ansible | Automation tool |
 | ![Terraform](https://cdn.simpleicons.org/terraform?size=32) | Terraform | Provisioning infrastructure declaratively |
 | <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/cloudflare-zero-trust.png" width="32" height="32" />  | Cloudflare | Zero-Trust Tunnel for exposing services securely on the internet |
 | ![Tailscale](https://cdn.simpleicons.org/tailscale?size=32) | Tailscale | Private mesh network for services not exposed publicly |
+| <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/traefik.webp" width="32" height="32" />  | Traefik | Application Proxy |
 | <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/infisical.svg" width="32" height="32" />  | Infisical | Secret management platform |
-
+| ![PostgreSQL](https://cdn.simpleicons.org/postgresql?size=32) | PostgreSQL | Relational Database |
 
 ## Monitoring
 
