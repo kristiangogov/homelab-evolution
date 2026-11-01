@@ -16,6 +16,7 @@
     KUBECONFIG: /etc/rancher/k3s/k3s.yaml
   when: flux_check.rc != 0
   failed_when: false
+  
 
 - name: Create GitHub credentials secret
   shell: |
@@ -28,6 +29,17 @@
     KUBECONFIG: /etc/rancher/k3s/k3s.yaml
   run_once: true
   when: flux_check.rc != 0
+
+- name: Create sops-age secret for decryption
+  shell: |
+    kubectl create secret generic sops-age \
+      --namespace=flux-system \
+      --from-literal=age.agekey='{{ sops_age_private_key }}' \
+      --dry-run=client -o yaml | kubectl apply -f -
+  environment:
+    KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+  no_log: true
+  run_once: true  
 
 - name: Seed FluxCD from Git Manifests
   shell: |

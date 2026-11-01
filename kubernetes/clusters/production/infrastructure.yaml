@@ -11,3 +11,7 @@ spec:
   path: ./kubernetes/infrastructure/production/
   prune: true
   wait: true
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
