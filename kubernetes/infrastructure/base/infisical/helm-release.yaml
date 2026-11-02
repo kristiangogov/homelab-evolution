@@ -29,8 +29,8 @@ spec:
     remediation:
       retries: 3
   values:
-    fullnameOverride: infisical
     infisical:
+      fullnameOverride: infisical
       image:
         repository: infisical/infisical
         tag: "v0.167.4"
