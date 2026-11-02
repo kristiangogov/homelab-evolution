@@ -30,7 +30,6 @@ spec:
       retries: 3
   values:
     fullnameOverride: infisical
-    nameOverride: infisical
     infisical:
       image:
         repository: infisical/infisical

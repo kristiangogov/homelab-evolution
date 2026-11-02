@@ -10,6 +10,6 @@ spec:
     - match: Host(`infisical.internal.gogov.dev`)
       kind: Rule
       services:
-        - name: infisical-infisical
+        - name: infisical
           port: 8080
   tls: {}
