@@ -14,7 +14,7 @@ A Proxmox-based homelab designed for reliably self-hosting services along with e
 | Migration from bare-metal server | Done |
 | Docker Services | Fully operational |
 | Rework of backup strategy and targets | In progress | 
-| Kubernetes | K3s, Traefik, SOPS, Flux, Infisical setup |
+| Kubernetes | K3s, Traefik, SOPS, Flux, Cloudflared, Infisical setup |
 | Kubernetes Live | Testing docker -> Kubernetes |
 
 ## Hardware
@@ -51,7 +51,7 @@ A Proxmox-based homelab designed for reliably self-hosting services along with e
 | <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/infisical.svg" width="32" height="32" />  | Infisical | Secret management platform |
 | ![PostgreSQL](https://cdn.simpleicons.org/postgresql?size=32) | PostgreSQL | Relational Database |
 
-## Monitoring
+## Docker Compose Monitoring
 
 | Logo | Name | Description |
 |:-:|-----|-------------|
@@ -60,7 +60,7 @@ A Proxmox-based homelab designed for reliably self-hosting services along with e
 | ![UptimeKUMA](https://cdn.simpleicons.org/uptimekuma?size=32) | Uptime Kuma | Alternative monitoring running as TrueNAS App |
 
 
-## Services
+## Docker Compose Stack
 | Logo | Name | Description |
 |:-:|-----|-------------|
 | ![Glance](https://cdn.simpleicons.org/glance?size=32) | Glance | Dashboard | 
