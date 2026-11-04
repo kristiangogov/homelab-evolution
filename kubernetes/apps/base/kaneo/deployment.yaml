@@ -1,0 +1,47 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kaneo
+  namespace: kaneo
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: kaneo
+  template:
+    metadata:
+      labels:
+        app: kaneo
+    spec:
+      containers:
+        - name: kaneo
+          image: ghcr.io/usekaneo/kaneo:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 5173
+          env:
+            - name: KANEO_CLIENT_URL
+              value: https://kaneo.gogov.dev
+          envFrom:
+            - secretRef:
+                name: kaneo-env
+          startupProbe:
+            httpGet: {path: /api/health, port: http}
+            periodSeconds: 5
+            failureThreshold: 24
+          readinessProbe:
+            httpGet: {path: /api/health, port: http}
+            periodSeconds: 15
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet: {path: /api/health, port: http}
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests: {cpu: 50m, memory: 192Mi}
+            limits: {memory: 512Mi}
