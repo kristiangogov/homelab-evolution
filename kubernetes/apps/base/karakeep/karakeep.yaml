@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: karakeep
+  namespace: karakeep
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector:
+    matchLabels: {app: karakeep}
+  template:
+    metadata:
+      labels: {app: karakeep}
+    spec:
+      containers:
+        - name: karakeep
+          image: ghcr.io/karakeep-app/karakeep:release
+          imagePullPolicy: Always
+          ports:
+            - {name: http, containerPort: 3000}
+          env:
+            - {name: NEXTAUTH_URL, value: https://karakeep.gogov.dev}
+            - {name: MEILI_ADDR, value: "http://meilisearch:7700"}
+            - {name: BROWSER_WEB_URL, value: "http://chrome:9222"}
+            - {name: DATA_DIR, value: /data}
+            - {name: KARAKEEP_VERSION, value: release}
+            - {name: MEILI_NO_ANALYTICS, value: "true"}
+          envFrom:
+            - secretRef: {name: karakeep-env}
+          volumeMounts:
+            - {name: data, mountPath: /data}
+          startupProbe:
+            tcpSocket: {port: http}
+            periodSeconds: 5
+            failureThreshold: 36
+          readinessProbe:
+            httpGet: {path: /api/health, port: http}
+            periodSeconds: 15
+          livenessProbe:
+            httpGet: {path: /api/health, port: http}
+            periodSeconds: 30
+            failureThreshold: 3
+          resources:
+            requests: {cpu: 100m, memory: 384Mi}
+            limits: {memory: 1Gi}
+      volumes:
+        - name: data
+          persistentVolumeClaim: {claimName: karakeep-data}
+          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: karakeep
+  namespace: karakeep
+spec:
+  selector: {app: karakeep}
+  ports:
+    - {name: http, port: 3000, targetPort: http}

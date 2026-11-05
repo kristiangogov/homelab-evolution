@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chrome
+  namespace: karakeep
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: chrome}
+  template:
+    metadata:
+      labels: {app: chrome}
+    spec:
+      containers:
+        - name: chrome
+          image: ghcr.io/karakeep-app/karakeep-chrome:release
+          imagePullPolicy: Always
+          args:
+            - chromium-browser
+            - --headless
+            - --disable-gpu
+            - --disable-dev-shm-usage
+            - --hide-scrollbars
+          ports:
+            - {name: cdp, containerPort: 9222}
+          readinessProbe:
+            tcpSocket: {port: cdp}
+            periodSeconds: 10
+          resources:
+            requests: {cpu: 50m, memory: 256Mi}
+            limits: {memory: 1Gi}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chrome
+  namespace: karakeep
+spec:
+  selector: {app: chrome}
+  ports:
+    - {name: cdp, port: 9222, targetPort: cdp}

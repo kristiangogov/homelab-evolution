@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meilisearch
+  namespace: karakeep
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector:
+    matchLabels: {app: meilisearch}
+  template:
+    metadata:
+      labels: {app: meilisearch}
+    spec:
+      containers:
+        - name: meilisearch
+          image: getmeili/meilisearch:v1.41.0
+          ports:
+            - {name: http, containerPort: 7700}
+          env:
+            - {name: MEILI_NO_ANALYTICS, value: "true"}
+          envFrom:
+            - secretRef: {name: karakeep-env}
+          volumeMounts:
+            - {name: data, mountPath: /meili_data}
+          readinessProbe:
+            httpGet: {path: /health, port: http}
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /health, port: http}
+            periodSeconds: 30
+          resources:
+            requests: {cpu: 50m, memory: 256Mi}
+            limits: {memory: 1Gi}
+      volumes:
+        - name: data
+          persistentVolumeClaim: {claimName: karakeep-meili}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: meilisearch
+  namespace: karakeep
+spec:
+  selector: {app: meilisearch}
+  ports:
+    - {name: http, port: 7700, targetPort: http}
