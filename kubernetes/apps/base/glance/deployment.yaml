@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: glance
+  namespace: glance
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: glance}
+  template:
+    metadata:
+      labels: {app: glance}
+    spec:
+      containers:
+        - name: glance
+          image: glanceapp/glance:latest
+          imagePullPolicy: Always
+          ports:
+            - {name: http, containerPort: 8080}
+          env:
+            - {name: TZ, value: Europe/Sofia}
+          envFrom:
+            - secretRef: {name: glance-env}
+          volumeMounts:
+            - {name: config, mountPath: /app/config}
+            - {name: assets, mountPath: /app/assets}
+          readinessProbe:
+            httpGet: {path: /api/healthz, port: http}
+            periodSeconds: 15
+          livenessProbe:
+            httpGet: {path: /api/healthz, port: http}
+            periodSeconds: 30
+          resources:
+            requests: {cpu: 20m, memory: 64Mi}
+            limits: {memory: 256Mi}
+      volumes:
+        - name: config
+          configMap: {name: glance-config}
+        - name: assets
+          configMap: {name: glance-assets}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: glance
+  namespace: glance
+spec:
+  selector: {app: glance}
+  ports:
+    - {name: http, port: 8080, targetPort: http}
