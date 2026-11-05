@@ -7,5 +7,6 @@ terraform.tfvars
 # Env
 *.env
 
-# Others
+# WIPs
 project.md
+architecture.md

@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: kaneo
-          image: ghcr.io/usekaneo/kaneo:latest
+          image: ghcr.io/usekaneo/kaneo:2.48.0
           imagePullPolicy: Always
           ports:
             - name: http
