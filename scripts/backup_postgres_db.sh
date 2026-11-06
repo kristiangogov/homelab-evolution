@@ -13,8 +13,8 @@ ssh server@production "
   docker exec postgres pg_dump -U docmost docmost \
     > /mnt/nas_backup/homelab/postgres/docmost-${timestamp}.sql
 
-  docker exec postgres pg_dump -U infisical infisical \
-    > /mnt/nas_backup/homelab/postgres/infisical-${timestamp}.sql
+  docker exec postgres pg_dump -U kaneo kaneo \
+    > /mnt/nas_backup/homelab/postgres/kaneo-${timestamp}.sql
 "
 
 echo "Database backups complete."
