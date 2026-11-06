@@ -1,0 +1,13 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: silverbullet
+  namespace: silverbullet
+spec:
+  entryPoints: [websecure]
+  routes:
+    - match: Host(`notes.gogov.dev`)
+      kind: Rule
+      services:
+        - {name: silverbullet, port: 3000}
+  tls: {}

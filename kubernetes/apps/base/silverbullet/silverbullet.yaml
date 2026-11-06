@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: silverbullet
+  namespace: silverbullet
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector:
+    matchLabels: {app: silverbullet}
+  template:
+    metadata:
+      labels: {app: silverbullet}
+    spec:
+      containers:
+        - name: silverbullet
+          image: ghcr.io/silverbulletmd/silverbullet:latest
+          imagePullPolicy: Always
+          ports:
+            - {name: http, containerPort: 3000}
+          envFrom:
+            - secretRef: {name: silverbullet-env}
+          volumeMounts:
+            - {name: space, mountPath: /space}
+          startupProbe:
+            tcpSocket: {port: http}
+            periodSeconds: 5
+            failureThreshold: 24
+          readinessProbe:
+            httpGet: {path: /.ping, port: http}
+            periodSeconds: 15
+          livenessProbe:
+            httpGet: {path: /.ping, port: http}
+            periodSeconds: 30
+            failureThreshold: 3
+          resources:
+            requests: {cpu: 20m, memory: 128Mi}
+            limits: {memory: 512Mi}
+      volumes:
+        - name: space
+          persistentVolumeClaim: {claimName: silverbullet-space}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: silverbullet
+  namespace: silverbullet
+spec:
+  selector: {app: silverbullet}
+  ports:
+    - {name: http, port: 3000, targetPort: http}
