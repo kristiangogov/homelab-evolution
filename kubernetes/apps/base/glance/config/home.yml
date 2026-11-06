@@ -33,6 +33,8 @@
                   url: https://truenas
                 - title: Github
                   url: https://github.com/kristiangogov
+                - title: Traefik
+                  url: https://traefik.internal.gogov.dev/dashboard/
 
         - type: custom-api
           title: Backup
