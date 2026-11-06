@@ -1,7 +1,7 @@
 - hosts: thinkcentre
   roles: [pve-passthrough-disk]
 
-- hosts: production
+- hosts: k3s-node-3
   become: true
   roles:
     - frigate-storage
