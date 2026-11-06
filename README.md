@@ -10,7 +10,7 @@ A Proxmox-based homelab designed for reliably self-hosting services along with e
 | Docker Services | Fully operational |
 | Rework of backup strategy and targets | In progress | 
 | Kubernetes | K3s, Traefik, SOPS, Flux, Cloudflared |
-| Kubernetes Migration | Ongoing |
+| Kubernetes Migration | Only Frigate Left |
 
 ## Hardware
 
@@ -18,8 +18,9 @@ A Proxmox-based homelab designed for reliably self-hosting services along with e
 | Logo | Device | Specs | Role |
 |-|-|-|-|
 | ![HP](https://cdn.simpleicons.org/hp?size=32) | HP EliteDesk 800 G2 SFF [1] |i5-6500 8GB RAM| NAS |
-| ![Lenovo](https://cdn.simpleicons.org/lenovo?size=32) | Lenovo Thinkcentre M700 |i3-6100T 16GB RAM| Main Proxmox Node |
-| ![HP](https://cdn.simpleicons.org/hp?size=32) | HP EliteDesk 800 G2 SFF [2] |i5-6500 8GB RAM |  Testing Proxmox Node |
+| ![HP](https://cdn.simpleicons.org/hp?size=32) | HP EliteDesk 800 G2 SFF [2] |i5-6500 8GB RAM |  Proxmox/k3s Node |
+| ![Lenovo](https://cdn.simpleicons.org/lenovo?size=32) | Lenovo Thinkcentre M710q |i3-7100T 8GB RAM| Proxmox/k3s Node |
+| ![Lenovo](https://cdn.simpleicons.org/lenovo?size=32) | Lenovo Thinkcentre M700 |i3-6100T 16GB RAM| Proxmox/k3s Node |
 
 #### Networking
 

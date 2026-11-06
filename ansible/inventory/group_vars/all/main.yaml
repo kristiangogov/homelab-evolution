@@ -10,7 +10,5 @@ nas_mounts:
   - export: /mnt/data/backup
     mount_point: /mnt/nas_backup  
 
-
-infisical_url: http://production:1234
-infisical_project_id: 4cf1ae60-3e55-48be-9960-8d7bf80febad
-infisical_env: prod
+k3s_server_url: "https://192.168.0.90:6443"
+k3s_version: "v1.36.5+k3s1"

@@ -17,6 +17,7 @@
 
 - name: Install K3s Server
   ansible.builtin.shell: >
-    curl -sfL https://get.k3s.io | sh -
+    curl -sfL https://get.k3s.io |
+    INSTALL_K3S_VERSION={{ k3s_version }} sh -s - server
   args:
     creates: /usr/local/bin/k3s
