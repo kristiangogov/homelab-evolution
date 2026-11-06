@@ -25,6 +25,8 @@
             - links:
                 - title: Proxmox ThinkCentre
                   url: https://192.168.0.251:8006/
+                - title: Proxmox ThinkCentre2
+                  url: https://192.168.0.252:8006/
                 - title: Proxmox EliteDesk
                   url: https://192.168.0.250:8006/
                 - title: TrueNAS
@@ -49,14 +51,6 @@
 
         - type: server-stats
           servers:
-            - type: local
-              name: ThinkCentre
-              cpu-temp-sensor: coretemp-isa-0000
-              mountpoints:
-                "/":
-                  name: SSD
-                "/mnt/frigate-storage":
-                  name: HDD
             - type: remote
               name: TrueNAS
               url: http://192.168.0.104:27973
@@ -85,16 +79,12 @@
               url: https://production:8971
               check-url: https://192.168.0.10:8971
               icon: si:frigate
-              allow-insecure: true
-            - title: Home Assistant
-              url: http://production:8123
-              check-url: http://192.168.0.10:8123
-              icon: si:homeassistant          
+              allow-insecure: true        
             - title: Kaneo
               url: https://kaneo.gogov.dev
               icon: si:todoist
             - title: Docmost
-              url: https://docs.gogov.dev
+              url: https://docmost.gogov.dev
               icon: si:googledocs                      
             - title: TrueNAS
               url: https://truenas
@@ -106,15 +96,7 @@
               icon: si:karakeep            
             - title: SilverBullet.md
               url: https://notes.gogov.dev
-              icon: si:thanos
-            - title: Jellyfin
-              url: https://jellyfin.gogov.dev
-              icon: si:jellyfin
-
-        - type: docker-containers
-          hide-by-default: false
-          running-only: false      
-              
+              icon: si:thanos             
 
 
     - size: small
