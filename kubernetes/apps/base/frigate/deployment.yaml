@@ -52,7 +52,7 @@ spec:
         - name: config
           persistentVolumeClaim: {claimName: frigate-config}
         - name: media
-          persistentVolumeClaim: {claimName: frigate-media}
+          hostPath: {path: /mnt/frigate-storage, type: Directory}
         - name: cfg
           configMap: {name: frigate-config}
         - name: dri
