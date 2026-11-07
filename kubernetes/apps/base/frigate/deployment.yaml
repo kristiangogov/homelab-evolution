@@ -19,10 +19,10 @@ spec:
         kubernetes.io/hostname: k3s-node-3
       containers:
         - name: frigate
-          image: ghcr.io/blakeblackshear/frigate:stable
+          image: ghcr.io/blakeblackshear/frigate:0.18.2-cfa08c5
           imagePullPolicy: Always
           securityContext:
-            privileged: true   # /dev/dri; swap for intel gpu device plugin later
+            privileged: true
           env:
             - name: TZ
               value: Europe/Sofia

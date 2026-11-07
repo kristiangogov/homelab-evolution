@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: silverbullet
-          image: ghcr.io/silverbulletmd/silverbullet:latest
+          image: ghcr.io/silverbulletmd/silverbullet:latest # On purpose
           imagePullPolicy: Always
           ports:
             - {name: http, containerPort: 3000}

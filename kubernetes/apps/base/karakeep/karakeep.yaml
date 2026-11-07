@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: karakeep
-          image: ghcr.io/karakeep-app/karakeep:release
+          image: ghcr.io/karakeep-app/karakeep:release # On purpose
           imagePullPolicy: Always
           ports:
             - {name: http, containerPort: 3000}
