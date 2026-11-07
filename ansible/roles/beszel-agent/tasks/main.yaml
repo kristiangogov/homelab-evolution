@@ -8,3 +8,32 @@
     creates: /opt/beszel-agent/beszel-agent
     stdin: "y"
   no_log: true
+
+- name: Beszel agent env file
+  ansible.builtin.copy:
+    dest: /etc/beszel-agent.env
+    owner: root
+    group: root
+    mode: "0600"
+    content: |
+      KEY={{ beszel_key }}
+      LISTEN=45876
+  no_log: true
+  notify: restart beszel-agent
+
+- name: Systemd drop-in dir
+  ansible.builtin.file:
+    path: /etc/systemd/system/beszel-agent.service.d
+    state: directory
+    mode: "0755"
+
+- name: Beszel agent drop-in
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/beszel-agent.service.d/override.conf
+    mode: "0644"
+    content: |
+      [Service]
+      Environment=
+      EnvironmentFile=
+      EnvironmentFile=/etc/beszel-agent.env
+  notify: restart beszel-agent
