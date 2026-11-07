@@ -1,35 +1,24 @@
 mqtt:
   enabled: false
-  host: mosquitto
-  port: 1883
-  topic_prefix: frigate
-  client_id: frigate
 
 detectors:
   ov:
-    # type: openvino
-    # device: GPU
-
-    ### For testing only.
     type: cpu
-    num_threads: 2
-
-# model:
-#   path: /openvino-model/ssdlite_mobilenet_v2.xml
-#   width: 300
-#   height: 300
-#   input_tensor: nhwc
-#   input_pixel_format: bgr
-#   labelmap_path: /openvino-model/coco_91cl_bkgr.txt
+    num_threads: 1
 
 record:
   enabled: true
-  retain:
-    days: 3
-    mode: motion
-  events:
+  continuous:
+    days: 0        # no 24/7 recording
+  motion:
+    days: 3        # old retain.days: 3 + mode: motion
+  alerts:
     retain:
-      default: 14
+      days: 14
+      mode: active_objects
+  detections:
+    retain:
+      days: 14
       mode: active_objects
 
 snapshots:
@@ -44,14 +33,21 @@ cameras:
   yard:
     ffmpeg:
       inputs:
-        - path: rtsp://admin:{FRIGATE_YARD_PASSWORD}@192.168.0.202:554/cam/realmonitor?channel=1&subtype=0&unicast=true&proto=Onvif
+        # Substream: detection
+        - path: rtsp://admin:{FRIGATE_YARD_PASSWORD}@192.168.0.202:554/cam/realmonitor?channel=1&subtype=1
           roles:
             - detect
+
+        # Main stream: recording
+        - path: rtsp://admin:{FRIGATE_YARD_PASSWORD}@192.168.0.202:554/cam/realmonitor?channel=1&subtype=0
+          roles:
             - record
+
     detect:
-      width: 1280
-      height: 720
+      width: 704
+      height: 576
       fps: 3
+
     objects:
       track:
         - person
@@ -60,15 +56,23 @@ cameras:
   gate:
     ffmpeg:
       inputs:
-        - path: rtsp://admin:{FRIGATE_GATE_PASSWORD}@192.168.0.201:554/cam/realmonitor?channel=1&subtype=0&unicast=true&proto=Onvif
+        # Substream: detection
+        - path: rtsp://admin:{FRIGATE_GATE_PASSWORD}@192.168.0.201:554/cam/realmonitor?channel=1&subtype=1
           roles:
             - detect
+
+        # Main stream: recording
+        - path: rtsp://admin:{FRIGATE_GATE_PASSWORD}@192.168.0.201:554/cam/realmonitor?channel=1&subtype=0
+          roles:
             - record
+
     detect:
-      width: 1280
-      height: 720
+      width: 704
+      height: 576
       fps: 3
+
     objects:
       track:
         - person
         - dog
+version: 0.18-0
