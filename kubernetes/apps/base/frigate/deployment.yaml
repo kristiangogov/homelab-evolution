@@ -19,7 +19,7 @@ spec:
         kubernetes.io/hostname: k3s-node-3
       containers:
         - name: frigate
-          image: ghcr.io/blakeblackshear/frigate:0.18.2-cfa08c5
+          image: ghcr.io/blakeblackshear/frigate:0.18.2
           imagePullPolicy: Always
           securityContext:
             privileged: true
