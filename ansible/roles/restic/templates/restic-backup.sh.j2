@@ -18,7 +18,7 @@ restic backup --tag homelab \
   {{ p }}{{ ' \\' if not loop.last }}
 {% endfor %}
 
-restic forget --tag homelab --prune \
+restic forget --tag homelab --group-by host,tags --prune \
   --keep-daily {{ restic_keep_daily }} \
   --keep-weekly {{ restic_keep_weekly }} \
   --keep-monthly {{ restic_keep_monthly }}
