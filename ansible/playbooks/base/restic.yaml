@@ -1,0 +1,7 @@
+---
+- name: Restic Backups
+  hosts: "production"
+  become: true
+
+  roles:
+    - restic

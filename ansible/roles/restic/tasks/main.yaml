@@ -1,0 +1,69 @@
+---
+- name: Install restic
+  ansible.builtin.apt:
+    name: restic
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Create restic config dir
+  ansible.builtin.file:
+    path: "{{ restic_config_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Create staging dir
+  ansible.builtin.file:
+    path: "{{ restic_staging_dir }}/postgres"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Deploy restic password file
+  ansible.builtin.copy:
+    content: "{{ restic_password }}"
+    dest: "{{ restic_config_dir }}/password"
+    owner: root
+    group: root
+    mode: "0400"
+  no_log: true
+
+- name: Deploy restic env file
+  ansible.builtin.template:
+    src: restic.env.j2
+    dest: "{{ restic_config_dir }}/env"
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Deploy backup script
+  ansible.builtin.template:
+    src: restic-backup.sh.j2
+    dest: /usr/local/bin/restic-backup
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Deploy systemd units
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+    mode: "0644"
+  loop:
+    - restic-backup.service
+    - restic-backup.timer
+  notify: Reload systemd
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable and start timer
+  ansible.builtin.systemd_service:
+    name: restic-backup.timer
+    enabled: true
+    state: started

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Managed by Ansible
+set -euo pipefail
+
+staging="{{ restic_staging_dir }}"
+
+echo "Backing up PostgreSQL databases."
+{% for d in restic_pg_dumps %}
+docker exec {{ restic_pg_container }} pg_dump -U {{ d.user }} {{ d.db }} \
+  > "${staging}/postgres/{{ d.db }}.sql.tmp"
+mv "${staging}/postgres/{{ d.db }}.sql.tmp" "${staging}/postgres/{{ d.db }}.sql"
+{% endfor %}
+echo "Database dumps complete."
+
+restic backup --tag homelab \
+  "${staging}" \
+{% for p in restic_backup_paths %}
+  {{ p }}{{ ' \\' if not loop.last }}
+{% endfor %}
+
+restic forget --tag homelab --prune \
+  --keep-daily {{ restic_keep_daily }} \
+  --keep-weekly {{ restic_keep_weekly }} \
+  --keep-monthly {{ restic_keep_monthly }}

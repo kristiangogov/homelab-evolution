@@ -1,0 +1,14 @@
+[Unit]
+Description=Restic homelab backup
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=docker.service
+RequiresMountsFor={{ restic_requires_mounts | join(' ') }}
+
+[Service]
+Type=oneshot
+EnvironmentFile={{ restic_config_dir }}/env
+ExecStart=/usr/local/bin/restic-backup
+Nice=10
+IOSchedulingClass=idle
+CacheDirectory=restic
