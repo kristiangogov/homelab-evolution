@@ -287,6 +287,9 @@
       - title: Traefik
         url: https://traefik.internal.gogov.dev/dashboard/
         icon: di:traefik
+      - title: Headlamp
+        url: https://headlamp.internal.gogov.dev/c/main/
+        icon: di:headlamp
 
     - type: monitor
       title: Apps
