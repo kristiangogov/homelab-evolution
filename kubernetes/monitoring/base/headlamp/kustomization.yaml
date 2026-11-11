@@ -5,3 +5,4 @@ resources:
 - helm-repository.yaml
 - certificate.yaml
 - helm-release.yaml
+- rbac.yaml
