@@ -1,0 +1,12 @@
+[Unit]
+Description=Notify restic backup unit failure
+
+[Service]
+Type=oneshot
+EnvironmentFile={{ restic_config_dir }}/env
+ExecStart=/usr/bin/curl -fsS -m 10 --retry 2 \
+  -H "Authorization: Bearer ${NTFY_TOKEN}" \
+  -H "Title: Backup Failed! {{ inventory_hostname }}" \
+  -H "Priority: high" -H "Tags: rotating_light" \
+  -d "restic-backup.service failed before or outside the script (mounts/docker/etc). See journalctl -u restic-backup." \
+  ${NTFY_URL}

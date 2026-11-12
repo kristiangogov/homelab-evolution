@@ -38,6 +38,7 @@
     owner: root
     group: root
     mode: "0600"
+  no_log: true
 
 - name: Deploy backup script
   ansible.builtin.template:
@@ -55,8 +56,9 @@
     group: root
     mode: "0644"
   loop:
-    - restic-backup.service
-    - restic-backup.timer
+  - restic-backup.service
+  - restic-backup-failed.service
+  - restic-backup.timer
   notify: Reload systemd
 
 - name: Flush handlers

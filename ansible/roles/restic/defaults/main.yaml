@@ -23,3 +23,6 @@ restic_timer_oncalendar: "*-*-* 03:00:00"
 restic_requires_mounts:
 - /mnt/nas_backup
 - /mnt/nas_config
+
+ntfy_url: "https://ntfy.gogov.dev"
+ntfy_topic: "alerts"

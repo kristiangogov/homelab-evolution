@@ -4,6 +4,7 @@ After=network-online.target docker.service
 Wants=network-online.target
 Requires=docker.service
 RequiresMountsFor={{ restic_requires_mounts | join(' ') }}
+OnFailure=restic-backup-failed.service
 
 [Service]
 Type=oneshot

@@ -3,6 +3,22 @@
 set -euo pipefail
 
 staging="{{ restic_staging_dir }}"
+start_ts=$(date +%s)
+
+ntfy() {  # title, priority, tags, body
+  curl -fsS -m 10 --retry 2 \
+    -H "Authorization: Bearer ${NTFY_TOKEN}" \
+    -H "Title: $1" -H "Priority: $2" -H "Tags: $3" \
+    -d "$4" "${NTFY_URL}" >/dev/null || echo "ntfy notification failed" >&2
+}
+
+on_error() {
+  local rc=$? line=$1
+  trap - ERR
+  ntfy "Backup Failed! {{ inventory_hostname }}" high rotating_light \
+    "Exit ${rc} at line ${line}: ${BASH_COMMAND}"
+}
+trap 'on_error $LINENO' ERR
 
 echo "Backing up PostgreSQL databases."
 {% for d in restic_pg_dumps %}
@@ -22,3 +38,6 @@ restic forget --tag homelab --group-by host,tags --prune \
   --keep-daily {{ restic_keep_daily }} \
   --keep-weekly {{ restic_keep_weekly }} \
   --keep-monthly {{ restic_keep_monthly }}
+
+ntfy "Backup OK: {{ inventory_hostname }}" low white_check_mark \
+  "Completed in $(( $(date +%s) - start_ts ))s"
