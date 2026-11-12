@@ -2,11 +2,10 @@
 .terraform/
 *.tfstate
 *.tfstate.*
-terraform.tfvars
+*.tfvars
 
 # Env
 *.env
 
 # WIPs
-project.md
-architecture.md
+temp/
