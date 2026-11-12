@@ -6,13 +6,14 @@ restic_config_dir: /etc/restic
 restic_staging_dir: /var/backups/restic-staging
 
 restic_backup_paths:
-  - /mnt/nas_config/karakeep
-  - /mnt/nas_config/silverbullet
+- /mnt/nas_config/karakeep
+- /mnt/nas_config/silverbullet
 
 restic_pg_container: postgres
 restic_pg_dumps:
-  - { user: docmost, db: docmost }
-  - { user: kaneo, db: kaneo }
+- { user: docmost, db: docmost }
+- { user: kaneo, db: kaneo }
+- { user: ntfy, db: ntfy }
 
 restic_keep_daily: 7
 restic_keep_weekly: 4
@@ -20,5 +21,5 @@ restic_keep_monthly: 6
 
 restic_timer_oncalendar: "*-*-* 03:00:00"
 restic_requires_mounts:
-  - /mnt/nas_backup
-  - /mnt/nas_config
+- /mnt/nas_backup
+- /mnt/nas_config
