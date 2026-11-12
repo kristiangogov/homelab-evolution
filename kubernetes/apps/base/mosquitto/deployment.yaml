@@ -23,7 +23,7 @@ spec:
         - { name: passwd, mountPath: /dst }
       containers:
       - name: mosquitto
-        image: eclipse-mosquitto:2.1.2
+        image: eclipse-mosquitto:2
         ports: [ { name: mqtt, containerPort: 1883 } ]
         readinessProbe: { tcpSocket: { port: mqtt } }
         livenessProbe: { tcpSocket: { port: mqtt }, initialDelaySeconds: 10 }
