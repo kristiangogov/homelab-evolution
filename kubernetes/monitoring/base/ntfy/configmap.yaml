@@ -9,3 +9,4 @@ data:
   NTFY_AUTH_DEFAULT_ACCESS: deny-all
   NTFY_ENABLE_SIGNUP: "false"
   NTFY_ENABLE_LOGIN: "true"
+  NTFY_REQUIRE_LOGIN: "true"
