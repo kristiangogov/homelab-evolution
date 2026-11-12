@@ -2,8 +2,6 @@ mqtt:
   enabled: true
   host: mosquitto.mqtt.svc
   port: 1883
-  user: frigate
-  password: "{FRIGATE_MQTT_PASSWORD}"
   topic_prefix: frigate
 
 detectors:

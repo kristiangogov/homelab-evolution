@@ -12,15 +12,6 @@ spec:
       securityContext:
         runAsUser: 1883
         runAsGroup: 1883
-        fsGroup: 1883
-      initContainers:
-      - name: init-passwd
-        image: busybox:stable
-        command: [ "sh", "-c", "cp /src/passwd /dst/passwd && cp /cfg/acl /dst/acl && chmod 0600 /dst/passwd /dst/acl" ]
-        volumeMounts:
-        - { name: passwd-src, mountPath: /src, readOnly: true }
-        - { name: config, mountPath: /cfg, readOnly: true }
-        - { name: passwd, mountPath: /dst }
       containers:
       - name: mosquitto
         image: eclipse-mosquitto:2
@@ -29,14 +20,9 @@ spec:
         livenessProbe: { tcpSocket: { port: mqtt }, initialDelaySeconds: 10 }
         volumeMounts:
         - { name: config, mountPath: /mosquitto/config, readOnly: true }
-        - { name: passwd, mountPath: /mosquitto/secret }
         resources:
           requests: { cpu: 10m, memory: 16Mi }
           limits: { memory: 64Mi }
       volumes:
       - name: config
         configMap: { name: mosquitto-config }
-      - name: passwd-src
-        secret: { secretName: mosquitto-passwd, defaultMode: 444 }
-      - name: passwd
-        emptyDir: {}
