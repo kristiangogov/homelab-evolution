@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: ntfy
-        image: binwiederhier/ntfy:v2.15.0 # pin to current release; must support database-url (postgres)
+        image: binwiederhier/ntfy:v2.37.2
         args: [ serve ]
         envFrom:
         - configMapRef: { name: ntfy-config }
