@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: mosquitto, namespace: mqtt }
+spec:
+  replicas: 1
+  strategy: { type: Recreate }
+  selector: { matchLabels: { app: mosquitto } }
+  template:
+    metadata: { labels: { app: mosquitto } }
+    spec:
+      securityContext:
+        runAsUser: 1883
+        runAsGroup: 1883
+        fsGroup: 1883
+      containers:
+      - name: mosquitto
+        image: eclipse-mosquitto:2
+        ports: [ { name: mqtt, containerPort: 1883 } ]
+        readinessProbe: { tcpSocket: { port: mqtt } }
+        livenessProbe: { tcpSocket: { port: mqtt }, initialDelaySeconds: 10 }
+        volumeMounts:
+        - { name: config, mountPath: /mosquitto/config, readOnly: true }
+        - { name: passwd, mountPath: /mosquitto/secret, readOnly: true }
+        resources:
+          requests: { cpu: 10m, memory: 16Mi }
+          limits: { memory: 64Mi }
+      volumes:
+      - name: config
+        configMap: { name: mosquitto-config }
+      - name: passwd
+        secret: { secretName: mosquitto-passwd, defaultMode: 440 }

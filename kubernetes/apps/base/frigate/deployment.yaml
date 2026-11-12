@@ -18,48 +18,47 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: k3s-node-3
       containers:
-        - name: frigate
-          image: ghcr.io/blakeblackshear/frigate:0.18.2
-          imagePullPolicy: Always
-          securityContext:
-            privileged: true
-          env:
-            - name: TZ
-              value: Europe/Sofia
-            - name: CONFIG_FILE
-              value: /config/config.yaml
-          envFrom:
-            - secretRef:
-                name: frigate-env
-          ports:
-            - name: https
-              containerPort: 8971
-          startupProbe:
-            httpGet: {path: /api/version, port: 5000}
-            periodSeconds: 5
-            failureThreshold: 36
-          livenessProbe:
-            httpGet: {path: /api/version, port: 5000}
-            periodSeconds: 30
-            failureThreshold: 4
-          volumeMounts:
-            - {name: config, mountPath: /config}
-            - {name: cfg,    mountPath: /cfg, readOnly: true}
-            - {name: media,  mountPath: /media/frigate}
-            - {name: dri,    mountPath: /dev/dri}
-            - {name: shm,    mountPath: /dev/shm}
+      - name: frigate
+        image: ghcr.io/blakeblackshear/frigate:0.18.2
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        env:
+        - name: TZ
+          value: Europe/Sofia
+        - name: CONFIG_FILE
+          value: /config/config.yaml
+        envFrom:
+        - secretRef:
+            name: frigate-env
+        ports:
+        - name: https
+          containerPort: 8971
+        startupProbe:
+          httpGet: { path: /api/version, port: 5000 }
+          periodSeconds: 5
+          failureThreshold: 36
+        livenessProbe:
+          httpGet: { path: /api/version, port: 5000 }
+          periodSeconds: 30
+          failureThreshold: 4
+        volumeMounts:
+        - { name: config, mountPath: /config }
+        - { name: cfg, mountPath: /cfg, readOnly: true }
+        - { name: media, mountPath: /media/frigate }
+        - { name: dri, mountPath: /dev/dri }
+        - { name: shm, mountPath: /dev/shm }
       volumes:
-        - name: config
-          persistentVolumeClaim: {claimName: frigate-config}
-        - name: media
-          hostPath: {path: /mnt/frigate-storage, type: Directory}
-        - name: cfg
-          configMap: {name: frigate-config}
-        - name: dri
-          hostPath: {path: /dev/dri, type: Directory}
-        - name: shm
-          emptyDir: {medium: Memory, sizeLimit: 256Mi}
-
+      - name: config
+        persistentVolumeClaim: { claimName: frigate-config }
+      - name: media
+        hostPath: { path: /mnt/frigate-storage, type: Directory }
+      - name: cfg
+        configMap: { name: frigate-config }
+      - name: dri
+        hostPath: { path: /dev/dri, type: Directory }
+      - name: shm
+        emptyDir: { medium: Memory, sizeLimit: 256Mi }
 ---
 apiVersion: v1
 kind: Service
@@ -70,6 +69,9 @@ spec:
   selector:
     app: frigate
   ports:
-    - name: https
-      port: 8971
-      targetPort: 8971
+  - name: https
+    port: 8971
+    targetPort: 8971
+  - name: http
+    port: 5000
+    targetPort: 5000

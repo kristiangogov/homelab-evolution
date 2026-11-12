@@ -1,5 +1,10 @@
 mqtt:
-  enabled: false
+  enabled: true
+  host: mosquitto.mqtt.svc
+  port: 1883
+  user: frigate
+  password: "{FRIGATE_MQTT_PASSWORD}"
+  topic_prefix: frigate
 
 detectors:
   ov:
@@ -9,9 +14,9 @@ detectors:
 record:
   enabled: true
   continuous:
-    days: 0        # no 24/7 recording
+    days: 0 # no 24/7 recording
   motion:
-    days: 3        # old retain.days: 3 + mode: motion
+    days: 3 # old retain.days: 3 + mode: motion
   alerts:
     retain:
       days: 14
@@ -33,15 +38,15 @@ cameras:
   yard:
     ffmpeg:
       inputs:
-        # Substream: detection
-        - path: rtsp://admin:{FRIGATE_YARD_PASSWORD}@192.168.0.202:554/cam/realmonitor?channel=1&subtype=1
-          roles:
-            - detect
+      # Substream: detection
+      - path: rtsp://admin:{FRIGATE_YARD_PASSWORD}@192.168.0.202:554/cam/realmonitor?channel=1&subtype=1
+        roles:
+        - detect
 
-        # Main stream: recording
-        - path: rtsp://admin:{FRIGATE_YARD_PASSWORD}@192.168.0.202:554/cam/realmonitor?channel=1&subtype=0
-          roles:
-            - record
+      # Main stream: recording
+      - path: rtsp://admin:{FRIGATE_YARD_PASSWORD}@192.168.0.202:554/cam/realmonitor?channel=1&subtype=0
+        roles:
+        - record
 
     detect:
       width: 704
@@ -50,21 +55,21 @@ cameras:
 
     objects:
       track:
-        - person
-        - dog
+      - person
+      - dog
 
   gate:
     ffmpeg:
       inputs:
-        # Substream: detection
-        - path: rtsp://admin:{FRIGATE_GATE_PASSWORD}@192.168.0.201:554/cam/realmonitor?channel=1&subtype=1
-          roles:
-            - detect
+      # Substream: detection
+      - path: rtsp://admin:{FRIGATE_GATE_PASSWORD}@192.168.0.201:554/cam/realmonitor?channel=1&subtype=1
+        roles:
+        - detect
 
-        # Main stream: recording
-        - path: rtsp://admin:{FRIGATE_GATE_PASSWORD}@192.168.0.201:554/cam/realmonitor?channel=1&subtype=0
-          roles:
-            - record
+      # Main stream: recording
+      - path: rtsp://admin:{FRIGATE_GATE_PASSWORD}@192.168.0.201:554/cam/realmonitor?channel=1&subtype=0
+        roles:
+        - record
 
     detect:
       width: 704
@@ -73,6 +78,6 @@ cameras:
 
     objects:
       track:
-        - person
-        - dog
+      - person
+      - dog
 version: 0.18-0
