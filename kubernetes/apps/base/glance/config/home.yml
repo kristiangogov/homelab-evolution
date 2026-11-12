@@ -287,12 +287,6 @@
       - title: Traefik
         url: https://traefik.internal.gogov.dev/dashboard/
         icon: di:traefik
-      - title: Headlamp
-        url: https://headlamp.internal.gogov.dev/c/main/
-        icon: di:headlamp
-      - title: Ntfy
-        url: https://ntfy.gogov.dev/
-        icon: di:ntfy
 
     - type: monitor
       title: Apps
@@ -332,6 +326,26 @@
 
   - size: small
     widgets:
+
+    - type: custom-api
+      title: ntfy alerts
+      cache: 1m
+      skip-json-validation: true
+      url: https://ntfy.gogov.dev/alerts/json?poll=1&since=12h
+      headers:
+        Authorization: Bearer ${NTFY_TOKEN}
+      template: |
+        {{ $msgs := .JSON.Array "..#(event==\"message\")#|@reverse" }}
+        <ul class="list list-gap-10 collapsible-container" data-collapse-after="5">
+          {{ range $i, $m := $msgs }}{{ if lt $i 25 }}
+          {{ $p := $m.Int "priority" }}
+          <li class="flex gap-10">
+            <span class="{{ if ge $p 5 }}color-negative{{ else if eq $p 4 }}color-primary{{ else }}color-subdue{{ end }}">●</span>
+            <span class="color-subdue shrink-0" style="min-width:4ch" {{ $m.String "time" | parseRelativeTime "unix" }}></span>
+            <span class="color-highlight text-truncate">{{ if $m.String "title" }}{{ $m.String "title" }}{{ else }}{{ $m.String "message" }}{{ end }}</span>
+          </li>
+          {{ end }}{{ end }}
+        </ul>
     - type: custom-api
       title: Physical Machines
       url: ${BESZEL_URL}/api/collections/systems/records?sort=name
@@ -365,13 +379,13 @@
                     {{ $name }}
                   </a>
                 {{ else }}
-                  <span class="color-highlight" style="font-size: 1.25em;">
+                  <span class="color-highlight">
                     {{ $name }}
                   </span>
                 {{ end }}
 
                 {{ if not $hideIP }}
-                  <div class="size-hint color-subdue" style="font-size: 1em;">
+                  <div class="size-hint color-subdue">
                     {{ .String "host" }}
                   </div>
                 {{ end }}
