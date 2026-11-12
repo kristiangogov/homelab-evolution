@@ -15,14 +15,15 @@ spec:
         fsGroup: 1883
       initContainers:
       - name: init-passwd
-        image: busybox:1.37
-        command: [ "sh", "-c", "cp /src/passwd /dst/passwd && chmod 0600 /dst/passwd" ]
+        image: busybox:stable
+        command: [ "sh", "-c", "cp /src/passwd /dst/passwd && cp /cfg/acl /dst/acl && chmod 0600 /dst/passwd /dst/acl" ]
         volumeMounts:
         - { name: passwd-src, mountPath: /src, readOnly: true }
+        - { name: config, mountPath: /cfg, readOnly: true }
         - { name: passwd, mountPath: /dst }
       containers:
       - name: mosquitto
-        image: eclipse-mosquitto:2
+        image: eclipse-mosquitto:2.1.2
         ports: [ { name: mqtt, containerPort: 1883 } ]
         readinessProbe: { tcpSocket: { port: mqtt } }
         livenessProbe: { tcpSocket: { port: mqtt }, initialDelaySeconds: 10 }

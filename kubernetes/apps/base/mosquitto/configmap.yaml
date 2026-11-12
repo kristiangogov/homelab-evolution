@@ -7,7 +7,7 @@ data:
     listener 1883
     allow_anonymous false
     password_file /mosquitto/secret/passwd
-    acl_file /mosquitto/config/acl
+    acl_file /mosquitto/secret/acl
     persistence false
     log_dest stdout
   acl: |
