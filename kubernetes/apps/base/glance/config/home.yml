@@ -290,6 +290,9 @@
       - title: Headlamp
         url: https://headlamp.internal.gogov.dev/c/main/
         icon: di:headlamp
+      - title: Ntfy
+        url: https://ntfy.gogov.dev/
+        icon: di:ntfy
 
     - type: monitor
       title: Apps
