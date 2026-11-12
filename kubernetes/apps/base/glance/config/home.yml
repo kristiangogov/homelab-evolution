@@ -438,13 +438,13 @@
                     {{ $name }}
                   </a>
                 {{ else }}
-                  <span class="color-highlight" style="font-size: 1.25em;">
+                  <span class="color-highlight">
                     {{ $name }}
                   </span>
                 {{ end }}
 
                 {{ if not $hideIP }}
-                  <div class="size-hint color-subdue" style="font-size: 1em;">
+                  <div class="size-hint color-subdue">
                     {{ .String "host" }}
                   </div>
                 {{ end }}
