@@ -333,20 +333,21 @@
           show-thumbnails: false
 
       - type: releases
-      show-source-icon: true
-      repositories:
-      - cloudflare/cloudflared
-      - henrygd/beszel
-      - docmost/docmost
-      - usekaneo/kaneo
-      - blakeblackshear/frigate
-      - 0x2142/frigate-notify
-      - karakeep-app/karakeep
-      - silverbulletmd/silverbullet
-      - inwiederhier/ntfy
-      - glanceapp/glance
-      - traefik/traefik-helm-chart
-      - kubernetes-sigs/headlamp
+        cache: 6h
+        show-source-icon: true
+        repositories:
+        - cloudflare/cloudflared
+        - henrygd/beszel
+        - docmost/docmost
+        - usekaneo/kaneo
+        - blakeblackshear/frigate
+        - 0x2142/frigate-notify
+        - karakeep-app/karakeep
+        - silverbulletmd/silverbullet
+        - inwiederhier/ntfy
+        - glanceapp/glance
+        - traefik/traefik-helm-chart
+        - kubernetes-sigs/headlamp
 
   - size: small
     widgets:
