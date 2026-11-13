@@ -344,7 +344,7 @@
         - 0x2142/frigate-notify
         - karakeep-app/karakeep
         - silverbulletmd/silverbullet
-        - inwiederhier/ntfy
+        - binwiederhier/ntfy
         - glanceapp/glance
         - traefik/traefik-helm-chart
         - kubernetes-sigs/headlamp
