@@ -3,21 +3,21 @@
   hide-desktop-navigation: true
 
   # Search bar
-  head-widgets:
-  - type: group
-    widgets:
-    - type: search
-      title: Google
-      search-engine: google
-      autofocus: true
+  # head-widgets:
+  # - type: group
+  #   widgets:
+  #   - type: search
+  #     title: Google
+  #     search-engine: google
+  #     autofocus: true
 
-    - type: search
-      title: DuckDuckGo
-      search-engine: duckduckgo
+  #   - type: search
+  #     title: DuckDuckGo
+  #     search-engine: duckduckgo
 
-    - type: search
-      title: YouTube
-      search-engine: https://www.youtube.com/results?search_query={QUERY}
+  #   - type: search
+  #     title: YouTube
+  #     search-engine: https://www.youtube.com/results?search_query={QUERY}
 
   columns:
   - size: small
@@ -319,16 +319,34 @@
         url: https://notes.gogov.dev
         icon: di:silverbullet.webp
 
-    - type: group
+    - type: split-column
       widgets:
-      - type: reddit
-        subreddit: selfhosted
-        collapse-after: 4
-        show-thumbnails: false
-      - type: reddit
-        subreddit: homelab
-        collapse-after: 4
-        show-thumbnails: false
+      - type: group
+        widgets:
+        - type: reddit
+          subreddit: selfhosted
+          collapse-after: 4
+          show-thumbnails: false
+        - type: reddit
+          subreddit: homelab
+          collapse-after: 4
+          show-thumbnails: false
+
+      - type: releases
+      show-source-icon: true
+      repositories:
+      - cloudflare/cloudflared
+      - henrygd/beszel
+      - docmost/docmost
+      - usekaneo/kaneo
+      - blakeblackshear/frigate
+      - 0x2142/frigate-notify
+      - karakeep-app/karakeep
+      - silverbulletmd/silverbullet
+      - inwiederhier/ntfy
+      - glanceapp/glance
+      - traefik/traefik-helm-chart
+      - kubernetes-sigs/headlamp
 
   - size: small
     widgets:

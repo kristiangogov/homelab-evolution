@@ -3,21 +3,21 @@
   hide-desktop-navigation: true
 
   # Search bar
-  head-widgets:
-  - type: group
-    widgets:
-    - type: search
-      title: Google
-      search-engine: google
-      autofocus: true
+  # head-widgets:
+  # - type: group
+  #   widgets:
+  #   - type: search
+  #     title: Google
+  #     search-engine: google
+  #     autofocus: true
 
-    - type: search
-      title: DuckDuckGo
-      search-engine: duckduckgo
+  #   - type: search
+  #     title: DuckDuckGo
+  #     search-engine: duckduckgo
 
-    - type: search
-      title: YouTube
-      search-engine: https://www.youtube.com/results?search_query={QUERY}
+  #   - type: search
+  #     title: YouTube
+  #     search-engine: https://www.youtube.com/results?search_query={QUERY}
 
   columns:
   - size: small
@@ -287,6 +287,12 @@
       - title: Traefik
         url: https://traefik.internal.gogov.dev/dashboard/
         icon: di:traefik
+      - title: Headlamp
+        url: https://headlamp.internal.gogov.dev/c/main/
+        icon: di:headlamp
+      - title: Ntfy
+        url: https://ntfy.gogov.dev/
+        icon: di:ntfy
 
     - type: monitor
       title: Apps
@@ -313,16 +319,34 @@
         url: https://notes.gogov.dev
         icon: di:silverbullet.webp
 
-    - type: group
+    - type: split-column
       widgets:
-      - type: reddit
-        subreddit: selfhosted
-        collapse-after: 4
-        show-thumbnails: false
-      - type: reddit
-        subreddit: homelab
-        collapse-after: 4
-        show-thumbnails: false
+      - type: group
+        widgets:
+        - type: reddit
+          subreddit: selfhosted
+          collapse-after: 4
+          show-thumbnails: false
+        - type: reddit
+          subreddit: homelab
+          collapse-after: 4
+          show-thumbnails: false
+
+      - type: releases
+      show-source-icon: true
+      repositories:
+      - cloudflare/cloudflared
+      - henrygd/beszel
+      - docmost/docmost
+      - usekaneo/kaneo
+      - blakeblackshear/frigate
+      - 0x2142/frigate-notify
+      - karakeep-app/karakeep
+      - silverbulletmd/silverbullet
+      - inwiederhier/ntfy
+      - glanceapp/glance
+      - traefik/traefik-helm-chart
+      - kubernetes-sigs/headlamp
 
   - size: small
     widgets:
@@ -438,13 +462,13 @@
                     {{ $name }}
                   </a>
                 {{ else }}
-                  <span class="color-highlight" style="font-size: 1.25em;">
+                  <span class="color-highlight">
                     {{ $name }}
                   </span>
                 {{ end }}
 
                 {{ if not $hideIP }}
-                  <div class="size-hint color-subdue" style="font-size: 1em;">
+                  <div class="size-hint color-subdue">
                     {{ .String "host" }}
                   </div>
                 {{ end }}
