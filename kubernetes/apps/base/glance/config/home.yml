@@ -356,7 +356,7 @@
       title: ntfy alerts
       cache: 1m
       skip-json-validation: true
-      url: https://ntfy.gogov.dev/alerts/json?poll=1&since=12h
+      url: https://ntfy.gogov.dev/alerts/json?poll=1&since=24h
       headers:
         Authorization: Bearer ${NTFY_TOKEN}
       template: |
@@ -371,6 +371,7 @@
           </li>
           {{ end }}{{ end }}
         </ul>
+
     - type: custom-api
       title: Physical Machines
       url: ${BESZEL_URL}/api/collections/systems/records?sort=name
