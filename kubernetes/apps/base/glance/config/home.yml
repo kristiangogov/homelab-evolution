@@ -320,7 +320,7 @@
         icon: di:silverbullet.webp
       - title: Norish
         url: https://norish.gogov.dev
-        icon: di:norish
+        icon: sh:norish
 
     - type: split-column
       widgets:
