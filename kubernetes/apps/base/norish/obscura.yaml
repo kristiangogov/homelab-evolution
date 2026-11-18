@@ -4,7 +4,7 @@ kind: Service
 metadata: { name: obscura, namespace: norish }
 spec:
   selector: { app: obscura }
-  ports: [{ name: cdp, port: 9222 }]
+  ports: [ { name: cdp, port: 9222 } ]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -21,21 +21,16 @@ spec:
     metadata: { labels: { app: obscura } }
     spec:
       containers:
-        - name: obscura
-          image: norishapp/obscura:latest # On purpose
-          imagePullPolicy: Always
-          ports: [{ name: cdp, containerPort: 9222 }]
-          env:
-            - name: OBSCURA_CDP_TOKEN
-              valueFrom:
-                secretKeyRef: { name: norish-env, key: OBSCURA_CDP_TOKEN }
-          readinessProbe:
-            tcpSocket: { port: cdp }
-            periodSeconds: 10
-          livenessProbe:
-            tcpSocket: { port: cdp }
-            periodSeconds: 30
-            failureThreshold: 3
-          resources:
-            requests: { cpu: 100m, memory: 256Mi }
-            limits: { memory: 1Gi }
+      - name: obscura
+        image: norishapp/obscura:latest # On purpose
+        imagePullPolicy: Always
+        ports: [ { name: cdp, containerPort: 9222 } ]
+        env:
+        - name: OBSCURA_CDP_TOKEN
+          valueFrom:
+            secretKeyRef: { name: norish-env, key: OBSCURA_CDP_TOKEN }
+        readinessProbe: { tcpSocket: { port: cdp }, periodSeconds: 10 }
+        livenessProbe: { tcpSocket: { port: cdp }, periodSeconds: 30, failureThreshold: 3 }
+        resources:
+          requests: { cpu: 100m, memory: 256Mi }
+          limits: { memory: 1Gi }

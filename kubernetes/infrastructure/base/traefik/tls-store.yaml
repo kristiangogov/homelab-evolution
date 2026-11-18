@@ -1,8 +1,6 @@
+---
 apiVersion: traefik.io/v1alpha1
 kind: TLSStore
-metadata:
-  name: default
-  namespace: traefik
+metadata: { name: default, namespace: traefik }
 spec:
-  defaultCertificate:
-    secretName: wildcard-gogov-tls
+  defaultCertificate: { secretName: wildcard-gogov-tls }

@@ -1,27 +1,22 @@
 ---
 apiVersion: apps/v1
 kind: Deployment
-metadata:
-  name: cloudflared
-  namespace: cloudflared
+metadata: { name: cloudflared, namespace: cloudflared }
 spec:
   replicas: 2
-  selector:
-    matchLabels: { app: cloudflared }
+  selector: { matchLabels: { app: cloudflared } }
   template:
-    metadata:
-      labels: { app: cloudflared }
+    metadata: { labels: { app: cloudflared } }
     spec:
       containers:
-        - name: cloudflared
-          image: cloudflare/cloudflared:2026.10.7
-          args: [tunnel, --no-autoupdate, --metrics, 0.0.0.0:2000, run]
-          envFrom:
-            - secretRef: { name: tunnel-token }
-          livenessProbe:
-            httpGet: { path: /ready, port: 2000 }
-          securityContext:
-            runAsNonRoot: true
-            readOnlyRootFilesystem: true
-            allowPrivilegeEscalation: false
-            capabilities: { drop: [ALL] }
+      - name: cloudflared
+        image: cloudflare/cloudflared:2026.10.7
+        args: [tunnel, --no-autoupdate, --metrics, 0.0.0.0:2000, run]
+        envFrom:
+        - secretRef: { name: tunnel-token }
+        livenessProbe: { httpGet: { path: /ready, port: 2000 } }
+        securityContext:
+          runAsNonRoot: true
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities: { drop: [ALL] }

@@ -1,13 +1,7 @@
 ---
 apiVersion: v1
 kind: Service
-metadata:
-  name: kaneo
-  namespace: kaneo
+metadata: { name: kaneo, namespace: kaneo }
 spec:
-  selector:
-    app: kaneo
-  ports:
-    - name: http
-      port: 5173
-      targetPort: http
+  selector: { app: kaneo }
+  ports: [ { name: http, port: 5173, targetPort: http } ]

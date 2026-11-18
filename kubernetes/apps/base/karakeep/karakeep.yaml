@@ -1,16 +1,13 @@
+---
 apiVersion: apps/v1
 kind: Deployment
-metadata:
-  name: karakeep
-  namespace: karakeep
+metadata: { name: karakeep, namespace: karakeep }
 spec:
   replicas: 1
   strategy: { type: Recreate }
-  selector:
-    matchLabels: { app: karakeep }
+  selector: { matchLabels: { app: karakeep } }
   template:
-    metadata:
-      labels: { app: karakeep }
+    metadata: { labels: { app: karakeep } }
     spec:
       containers:
       - name: karakeep
@@ -29,13 +26,8 @@ spec:
         - secretRef: { name: karakeep-env }
         volumeMounts:
         - { name: data, mountPath: /data }
-        startupProbe:
-          tcpSocket: { port: http }
-          periodSeconds: 5
-          failureThreshold: 36
-        readinessProbe:
-          httpGet: { path: /api/health, port: http }
-          periodSeconds: 15
+        startupProbe: { tcpSocket: { port: http }, periodSeconds: 5, failureThreshold: 36 }
+        readinessProbe: { httpGet: { path: /api/health, port: http }, periodSeconds: 15 }
         livenessProbe:
           httpGet: { path: /api/health, port: http }
           periodSeconds: 30
@@ -49,9 +41,7 @@ spec:
 ---
 apiVersion: v1
 kind: Service
-metadata:
-  name: karakeep
-  namespace: karakeep
+metadata: { name: karakeep, namespace: karakeep }
 spec:
   selector: { app: karakeep }
   ports:

@@ -14,36 +14,34 @@ spec:
     metadata: { labels: { app: norish } }
     spec:
       containers:
-        - name: norish
-          image: norishapp/norish:latest # On purpose
-          imagePullPolicy: Always
-          ports:
-            - { name: http, containerPort: 3000 }
-          env:
-            - { name: AUTH_URL, value: https://norish.gogov.dev }
-            - { name: VALKEY_URL, value: valkey://norish-valkey:6379 }
-            - { name: UPLOADS_DIR, value: /app/uploads }
-            - { name: OBSCURA_ENDPOINT, value: ws://obscura:9222 }
-          envFrom:
-            - secretRef: { name: norish-env }
-          startupProbe:
-            httpGet: { path: /api/v1/health/live, port: http }
-            periodSeconds: 5
-            failureThreshold: 24
-          readinessProbe:
-            httpGet: { path: /api/v1/health/ready, port: http }
-            periodSeconds: 15
-            timeoutSeconds: 5
-          livenessProbe:
-            httpGet: { path: /api/v1/health/live, port: http }
-            periodSeconds: 30
-            timeoutSeconds: 5
-            failureThreshold: 3
-          resources:
-            requests: { cpu: 100m, memory: 256Mi }
-            limits: { memory: 1Gi }
-          volumeMounts:
-            - { name: uploads, mountPath: /app/uploads }
+      - name: norish
+        image: norishapp/norish:latest # On purpose
+        imagePullPolicy: Always
+        ports: [ { name: http, containerPort: 3000 } ]
+        env:
+        - { name: AUTH_URL, value: https://norish.gogov.dev }
+        - { name: VALKEY_URL, value: valkey://norish-valkey:6379 }
+        - { name: UPLOADS_DIR, value: /app/uploads }
+        - { name: OBSCURA_ENDPOINT, value: ws://obscura:9222 }
+        envFrom: [ { secretRef: { name: norish-env } } ]
+        startupProbe:
+          httpGet: { path: /api/v1/health/live, port: http }
+          periodSeconds: 5
+          failureThreshold: 24
+        readinessProbe:
+          httpGet: { path: /api/v1/health/ready, port: http }
+          periodSeconds: 15
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet: { path: /api/v1/health/live, port: http }
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+        resources:
+          requests: { cpu: 100m, memory: 256Mi }
+          limits: { memory: 1Gi }
+        volumeMounts:
+        - { name: uploads, mountPath: /app/uploads }
       volumes:
-        - name: uploads
-          persistentVolumeClaim: { claimName: norish-uploads }
+      - name: uploads
+        persistentVolumeClaim: { claimName: norish-uploads }

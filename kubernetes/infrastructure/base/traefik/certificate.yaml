@@ -1,14 +1,8 @@
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
-metadata:
-  name: wildcard-gogov
-  namespace: traefik
+metadata: { name: wildcard-gogov, namespace: traefik }
 spec:
   secretName: wildcard-gogov-tls
-  issuerRef:
-    name: letsencrypt-prod
-    kind: ClusterIssuer
-  dnsNames:
-    - "*.gogov.dev"
-    - "*.internal.gogov.dev"
+  issuerRef: { name: letsencrypt-prod, kind: ClusterIssuer }
+  dnsNames: ["*.gogov.dev", "*.internal.gogov.dev"]
