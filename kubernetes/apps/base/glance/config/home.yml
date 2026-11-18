@@ -318,6 +318,9 @@
       - title: SilverBullet.md
         url: https://notes.gogov.dev
         icon: di:silverbullet.webp
+      - title: Norish
+        url: https://norish.gogov.dev
+        icon: di:norish
 
     - type: split-column
       widgets:
