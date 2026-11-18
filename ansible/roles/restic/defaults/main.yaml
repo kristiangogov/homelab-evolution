@@ -14,6 +14,7 @@ restic_pg_dumps:
 - { user: docmost, db: docmost }
 - { user: kaneo, db: kaneo }
 - { user: ntfy, db: ntfy }
+- { user: norish, db: norish }
 
 restic_keep_daily: 7
 restic_keep_weekly: 4
