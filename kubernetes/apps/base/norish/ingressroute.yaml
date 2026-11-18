@@ -1,0 +1,11 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata: { name: norish, namespace: norish }
+spec:
+  entryPoints: [websecure]
+  routes:
+    - match: Host(`norish.gogov.dev`)
+      kind: Rule
+      services: [{ name: norish, port: 3000 }]
+  tls: {}

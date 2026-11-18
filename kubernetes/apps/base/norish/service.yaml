@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: Service
+metadata: { name: norish, namespace: norish }
+spec:
+  selector: { app: norish }
+  ports:
+    - { name: http, port: 3000, targetPort: http }

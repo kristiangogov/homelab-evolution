@@ -9,3 +9,4 @@ resources:
 - frigate
 - frigate-notify
 - mosquitto
+- norish
