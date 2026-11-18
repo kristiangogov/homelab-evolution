@@ -11,7 +11,7 @@ kind: Service
 metadata: { name: docmost, namespace: docmost }
 spec:
   selector: { app: docmost }
-  ports: [{ port: 3000 }]
+  ports: [ { port: 3000 } ]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -21,28 +21,24 @@ metadata:
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
-  replicas: 1                   
+  replicas: 1
   strategy: { type: Recreate }
   selector: { matchLabels: { app: docmost } }
   template:
     metadata: { labels: { app: docmost } }
     spec:
       containers:
-        - name: docmost
-          image: docmost/docmost:latest # On purpose
-          envFrom: [{ secretRef: { name: docmost-env } }]
-          ports: [{ containerPort: 3000 }]
-          startupProbe:
-            tcpSocket: { port: 3000 }
-            failureThreshold: 30
-            periodSeconds: 5
-          readinessProbe:
-            tcpSocket: { port: 3000 }
-          resources:
-            requests: { cpu: 100m, memory: 256Mi }
-            limits: { memory: 1Gi }
-          volumeMounts:
-            - { name: storage, mountPath: /app/data/storage }
+      - name: docmost
+        image: docmost/docmost:latest # On purpose
+        envFrom: [ { secretRef: { name: docmost-env } } ]
+        ports: [ { containerPort: 3000 } ]
+        startupProbe: { tcpSocket: { port: 3000 }, failureThreshold: 30, periodSeconds: 5 }
+        readinessProbe: { tcpSocket: { port: 3000 } }
+        resources:
+          requests: { cpu: 100m, memory: 256Mi }
+          limits: { memory: 1Gi }
+        volumeMounts:
+        - { name: storage, mountPath: /app/data/storage }
       volumes:
-        - name: storage
-          persistentVolumeClaim: { claimName: docmost-storage }
+      - name: storage
+        persistentVolumeClaim: { claimName: docmost-storage }

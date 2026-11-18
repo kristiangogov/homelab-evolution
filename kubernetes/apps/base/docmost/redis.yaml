@@ -4,7 +4,7 @@ kind: Service
 metadata: { name: docmost-redis, namespace: docmost }
 spec:
   selector: { app: docmost-redis }
-  ports: [{ port: 6379 }]
+  ports: [ { port: 6379 } ]
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -17,19 +17,18 @@ spec:
     metadata: { labels: { app: docmost-redis } }
     spec:
       containers:
-        - name: redis
-          image: redis:8
-          args: [redis-server, --appendonly, "yes", --maxmemory-policy, noeviction]
-          ports: [{ containerPort: 6379 }]
-          readinessProbe:
-            exec: { command: [redis-cli, ping] }
-          resources:
-            requests: { cpu: 50m, memory: 64Mi }
-            limits: { memory: 256Mi }
-          volumeMounts:
-            - { name: data, mountPath: /data }
+      - name: redis
+        image: redis:8
+        args: [redis-server, --appendonly, "yes", --maxmemory-policy, noeviction]
+        ports: [ { containerPort: 6379 } ]
+        readinessProbe: { exec: { command: [redis-cli, ping] } }
+        resources:
+          requests: { cpu: 50m, memory: 64Mi }
+          limits: { memory: 256Mi }
+        volumeMounts:
+        - { name: data, mountPath: /data }
   volumeClaimTemplates:
-    - metadata: { name: data }
-      spec:
-        accessModes: [ReadWriteOnce]
-        resources: { requests: { storage: 1Gi } }
+  - metadata: { name: data }
+    spec:
+      accessModes: [ReadWriteOnce]
+      resources: { requests: { storage: 1Gi } }
