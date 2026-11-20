@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: { name: status-data, namespace: status }
+spec:
+  accessModes: [ ReadWriteOnce ]
+  resources: { requests: { storage: 1Gi } }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: status, namespace: status }
+spec:
+  replicas: 1
+  strategy: { type: Recreate }
+  selector: { matchLabels: { app: status } }
+  template:
+    metadata: { labels: { app: status } }
+    spec:
+      securityContext: { fsGroup: 65532 }
+      containers:
+      - name: status
+        image: ghcr.io/kristiangogov/status:ca89223095ae780f92462538d9d16b5d3f660cf5
+        ports: [ { containerPort: 8080 } ]
+        env:
+        - { name: STATUS_DIR, value: /data }
+        - name: STATUS_TOKEN
+          valueFrom: { secretKeyRef: { name: status-token, key: STATUS_TOKEN } }
+        volumeMounts: [ { name: data, mountPath: /data } ]
+        readinessProbe: { httpGet: { path: /healthz, port: 8080 } }
+        livenessProbe: { httpGet: { path: /healthz, port: 8080 } }
+      volumes:
+      - name: data
+        persistentVolumeClaim: { claimName: status-data }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: status, namespace: status }
+spec:
+  selector: { app: status }
+  ports: [ { port: 8080, targetPort: 8080 } ]
