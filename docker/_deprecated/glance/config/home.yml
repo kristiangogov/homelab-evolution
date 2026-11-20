@@ -370,6 +370,21 @@
           </li>
           {{ end }}{{ end }}
         </ul>
+
+    - type: custom-api
+      title: Backups
+      cache: 5m
+      url: https://status.internal.gogov.dev/status/homedir
+      template: |
+        {{ $t := .JSON.String "time" | parseTime "rfc3339" }}
+        <ul class="list list-gap-10">
+          <li class="flex gap-10">
+            <span class="{{ if gt ((now).Sub $t).Hours 72.0 }}color-negative{{ else }}color-positive{{ end }}">●</span>
+            <span class="color-subdue shrink-0" style="min-width:4ch" {{ .JSON.String "time" | parseRelativeTime "rfc3339" }}></span>
+            <span class="color-highlight text-truncate">Workstation Backup</span>
+          </li>
+        </ul>
+
     - type: custom-api
       title: Physical Machines
       url: ${BESZEL_URL}/api/collections/systems/records?sort=name
