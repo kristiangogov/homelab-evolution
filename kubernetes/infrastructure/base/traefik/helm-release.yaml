@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: "42.2.0"
+      version: "42.4.1"
       sourceRef:
         kind: HelmRepository
         name: traefik
@@ -28,7 +28,7 @@ spec:
       dashboard:
         enabled: true
         matchRule: Host(`traefik.internal.gogov.dev`)
-        entryPoints: [websecure]
+        entryPoints: [ websecure ]
         tls: {}
     ports:
       web:

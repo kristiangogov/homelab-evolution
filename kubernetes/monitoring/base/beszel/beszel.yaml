@@ -14,19 +14,19 @@ spec:
     spec:
       containers:
       - name: beszel
-        image: henrygd/beszel:latest # On purpose
+        image: henrygd/beszel:0.21.2
         env:
         - { name: APP_URL, value: https://beszel.internal.gogov.dev }
         ports: [ { name: http, containerPort: 8090 } ]
         volumeMounts:
         - { name: data, mountPath: /beszel_data }
         readinessProbe:
-          exec: { command: ["/beszel", "health", "--url", "http://localhost:8090"] }
+          exec: { command: [ "/beszel", "health", "--url", "http://localhost:8090" ] }
           initialDelaySeconds: 10
           periodSeconds: 30
           timeoutSeconds: 5
         livenessProbe:
-          exec: { command: ["/beszel", "health", "--url", "http://localhost:8090"] }
+          exec: { command: [ "/beszel", "health", "--url", "http://localhost:8090" ] }
           initialDelaySeconds: 30
           periodSeconds: 120
           timeoutSeconds: 5
@@ -44,7 +44,7 @@ metadata:
   namespace: beszel
   labels: { app.kubernetes.io/name: beszel }
 spec:
-  accessModes: [ReadWriteOnce]
+  accessModes: [ ReadWriteOnce ]
   resources: { requests: { storage: 1Gi } }
 ---
 apiVersion: v1

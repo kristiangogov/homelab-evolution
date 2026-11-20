@@ -10,7 +10,7 @@ spec:
     spec:
       containers:
       - name: glance
-        image: glanceapp/glance:latest # On purpose
+        image: glanceapp/glance:0.8.8
         imagePullPolicy: Always
         ports: [ { name: http, containerPort: 8080 } ]
         env:
