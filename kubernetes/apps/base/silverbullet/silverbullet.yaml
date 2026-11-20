@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: silverbullet
-        image: ghcr.io/silverbulletmd/silverbullet:latest # On purpose
+        image: ghcr.io/silverbulletmd/silverbullet:2.12.1
         imagePullPolicy: Always
         ports: [ { name: http, containerPort: 3000 } ]
         envFrom: [ { secretRef: { name: silverbullet-env } } ]
