@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
       - name: docmost
-        image: docmost/docmost:0.97.0
+        image: docmost/docmost:0.98.0
         envFrom: [ { secretRef: { name: docmost-env } } ]
         ports: [ { containerPort: 3000 } ]
         startupProbe: { tcpSocket: { port: 3000 }, failureThreshold: 30, periodSeconds: 5 }
