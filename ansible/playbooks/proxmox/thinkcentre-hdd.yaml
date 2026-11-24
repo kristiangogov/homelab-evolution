@@ -1,7 +1,10 @@
 - hosts: thinkcentre
-  roles: [pve-passthrough-disk]
+  roles:
+  - role: pve-passthrough-disk
+    vars:
+      pve_vmid: 903
 
 - hosts: k3s-node-3
   become: true
   roles:
-    - frigate-storage
+  - frigate-storage
