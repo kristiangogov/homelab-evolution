@@ -3,14 +3,14 @@
 A Proxmox-based homelab designed for reliably self-hosting services along with experimenting with new technologies via disposable VM environments. The setup is heavily focused on Infrastructure-as-Code and automation.
 
 
-## Evolution Status
+## Networking
 
-| Area | State |
-|------|-------|
-| Docker Services | Fully operational |
-| Rework of backup strategy and targets | In progress | 
-| Kubernetes | K3s, Traefik, SOPS, Flux, Cloudflared |
-| Kubernetes Migration | Only Frigate Left |
+### Physical:
+![Physical Networking](assets/physical.svg)
+### Flow:
+![Networking Flow](assets/flow.svg)
+### K3s:
+![K3s Networking](assets/k3s.svg)
 
 ## Hardware
 
