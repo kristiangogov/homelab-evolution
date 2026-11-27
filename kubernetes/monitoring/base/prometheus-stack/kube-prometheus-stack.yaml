@@ -1,0 +1,156 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata: { name: prometheus-stack, namespace: monitoring }
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      version: "94.0.0"
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+  install:
+    remediation: { retries: 3 }
+    crds: CreateReplace
+  upgrade:
+    remediation: { retries: 3 }
+    crds: CreateReplace
+  values:
+    crds:
+      enabled: true
+    kubeEtcd: { enabled: false }
+    kubeScheduler: { enabled: false }
+    kubeControllerManager: { enabled: false }
+    kubeProxy: { enabled: false }
+    defaultRules:
+      rules:
+        etcd: false
+        kubeControllerManager: false
+        kubeProxy: false
+        kubeSchedulerAlerting: false
+        kubeSchedulerRecording: false
+
+    alertmanager:
+      enabled: true
+      config:
+        global:
+          resolve_timeout: 5m
+        inhibit_rules:
+        - source_matchers: [ 'severity = critical' ]
+          target_matchers: [ 'severity =~ warning|info' ]
+          equal: [ 'namespace', 'alertname' ]
+        - source_matchers: [ 'severity = warning' ]
+          target_matchers: [ 'severity = info' ]
+          equal: [ 'namespace', 'alertname' ]
+        - source_matchers: [ 'alertname = InfoInhibitor' ]
+          target_matchers: [ 'severity = info' ]
+          equal: [ 'namespace' ]
+        - target_matchers: [ 'alertname = InfoInhibitor' ]
+        route:
+          group_by: [ 'namespace' ]
+          group_wait: 30s
+          group_interval: 5m
+          repeat_interval: 12h
+          receiver: 'null'
+          routes:
+          - receiver: 'null'
+            matchers: [ 'alertname = "Watchdog"' ]
+          - receiver: 'null'
+            matchers: [ 'alertname = "InfoInhibitor"' ]
+        receivers:
+        - name: 'null'
+        templates:
+        - '/etc/alertmanager/config/*.tmpl'
+      alertmanagerSpec:
+        replicas: 1
+        retention: 120h
+        resources:
+          requests: { cpu: 10m, memory: 64Mi }
+          limits: { cpu: 250m, memory: 256Mi }
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: local-path
+              accessModes: [ ReadWriteOnce ]
+              resources:
+                requests: { storage: 1Gi }
+
+    grafana:
+      admin:
+        existingSecret: grafana-admin
+        userKey: admin-user
+        passwordKey: admin-password
+      initChownData:
+        resources:
+          requests: { cpu: 10m, memory: 32Mi }
+          limits: { cpu: 100m, memory: 64Mi }
+      sidecar:
+        resources:
+          requests: { cpu: 10m, memory: 32Mi }
+          limits: { cpu: 100m, memory: 128Mi }
+        dashboards:
+          enabled: true
+          searchNamespace: ALL
+      additionalDataSources:
+      - name: Loki
+        type: loki
+        access: proxy
+        url: http://loki.monitoring.svc:3100
+        uid: loki
+        isDefault: false
+        editable: false
+      persistence:
+        enabled: true
+        size: 1Gi
+        storageClassName: local-path
+      resources:
+        requests: { cpu: 50m, memory: 128Mi }
+        limits: { cpu: 500m, memory: 384Mi }
+
+    prometheusOperator:
+      resources:
+        requests: { cpu: 50m, memory: 128Mi }
+        limits: { cpu: 500m, memory: 512Mi }
+      prometheusConfigReloader:
+        resources:
+          requests: { cpu: 10m, memory: 50Mi }
+          limits: { cpu: 100m, memory: 128Mi }
+      admissionWebhooks:
+        patch:
+          resources:
+            requests: { cpu: 10m, memory: 32Mi }
+            limits: { cpu: 100m, memory: 64Mi }
+
+    prometheus:
+      prometheusSpec:
+        scrapeInterval: 60s
+        evaluationInterval: 60s
+        retention: 7d
+        retentionSize: 8GB
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        scrapeConfigSelectorNilUsesHelmValues: false
+        resources:
+          requests: { cpu: 100m, memory: 512Mi }
+          limits: { cpu: 1000m, memory: 1Gi }
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: local-path
+              accessModes: [ ReadWriteOnce ]
+              resources:
+                requests: { storage: 10Gi }
+
+    kube-state-metrics:
+      resources:
+        requests: { cpu: 50m, memory: 64Mi }
+        limits: { cpu: 500m, memory: 256Mi }
+
+    prometheus-node-exporter:
+      resources:
+        requests: { cpu: 50m, memory: 64Mi }
+        limits: { cpu: 200m, memory: 128Mi }
