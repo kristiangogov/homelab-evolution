@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evolution-dashboard
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: evolution-dashboard
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: evolution-dashboard
+    spec:
+      serviceAccountName: evolution-dashboard
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: dashboard
+        image: ghcr.io/kristiangogov/evolution-dashboard:sha-d4d70e8
+        ports:
+        - name: http
+          containerPort: 8080
+        env:
+        - name: CONFIG_PATH
+          value: /config/config.yaml
+        # Add secret.sops.yaml (SOPS+age) when enabling Proxmox/Prometheus auth
+        envFrom:
+        - secretRef:
+            name: evolution-dashboard-secrets
+            optional: true
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            cpu: 250m
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: [ "ALL" ]
+        volumeMounts:
+        - name: config
+          mountPath: /config
+          readOnly: true
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 10
+      volumes:
+      - name: config
+        configMap:
+          name: evolution-dashboard-config

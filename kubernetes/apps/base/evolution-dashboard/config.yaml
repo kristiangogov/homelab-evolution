@@ -1,0 +1,61 @@
+server:
+  listen: ":8080"
+  poll_interval: "12s"
+  request_timeout: "8s"
+
+cluster:
+  name: "homelab"
+  subtitle: "k3s control plane"
+
+prometheus:
+  enabled: true
+  url: "http://prometheus-stack-kube-prom-prometheus.monitoring.svc.cluster.local:9090"
+  auth_header: "Authorization"
+  timeout: "8s"
+  insecure_skip_verify: false
+
+proxmox:
+  enabled: false
+  url: "https://proxmox.home.lan:8006"
+  timeout: "8s"
+  insecure_skip_verify: true
+
+kubernetes:
+  enabled: true
+  timeout: "8s"
+  insecure_skip_verify: false
+
+physical_nodes:
+- { id: thinkcentre, name: thinkcentre, role: Proxmox, instance: "192.168.0.251:9100", mountpoint: /, proxmox_node: thinkcentre, description: Primary Proxmox hypervisor }
+- { id: thinkcentre2, name: thinkcentre2, role: Proxmox, instance: "192.168.0.252:9100", mountpoint: /, proxmox_node: thinkcentre2, description: Secondary Proxmox hypervisor }
+- { id: elitedesk, name: elitedesk, role: Proxmox, instance: "192.168.0.250:9100", mountpoint: /, proxmox_node: elitedesk, description: Proxmox hypervisor }
+- { id: nas, name: NAS, role: TrueNAS, instance: 192.168.0.104:9100, mountpoint: /mnt/tank, description: TrueNAS storage node }
+
+virtual_machines:
+- { id: production, name: production, role: Docker, instance: "192.168.0.10:9100", parent: thinkcentre, proxmox_node: thinkcentre, proxmox_vmid: 100, production: true, description: "Legacy Docker, Postgres, restic" }
+- { id: k3s-node-1, name: k3s-node-1, role: K3s server, instance: "192.168.0.90:9100", parent: elitedesk, proxmox_node: elitedesk, proxmox_vmid: 901 }
+- { id: k3s-node-2, name: k3s-node-2, role: K3s agent, instance: "192.168.0.91:9100", parent: thinkcentre2, proxmox_node: thinkcentre2, proxmox_vmid: 902 }
+- { id: k3s-node-3, name: k3s-node-3, role: K3s agent, instance: "192.168.0.92:9100", parent: thinkcentre, proxmox_node: thinkcentre, proxmox_vmid: 903, description: "Frigate, iGPU" }
+
+flux:
+  namespace: flux-system
+  kustomizations:
+  - infrastructure
+  - apps
+  - monitoring
+
+services:
+- name: Infrastructure
+  icon: server
+  services:
+  - { name: Proxmox, subtitle: Hypervisor cluster, url: "https://proxmox.home.lan:8006", icon: proxmox }
+  - { name: TrueNAS, subtitle: Storage & shares, url: "https://nas.home.lan", icon: truenas }
+- name: Monitoring
+  icon: chart
+  services:
+  - { name: Grafana, subtitle: Dashboards & alerts, url: "https://grafana.internal.gogov.dev", icon: grafana }
+- name: Apps
+  icon: play
+  services:
+  - { name: Jellyfin, subtitle: Movies & TV, url: "https://jellyfin.internal.gogov.dev", icon: jellyfin }
+  - { name: Docmost, subtitle: Docs, url: "https://docmost.gogov.dev", icon: shield }

@@ -10,3 +10,4 @@ resources:
 - frigate-notify
 - mosquitto
 - norish
+- evolution-dashboard
