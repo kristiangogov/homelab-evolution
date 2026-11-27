@@ -1,0 +1,17 @@
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: external-hosts
+  namespace: monitoring
+  labels:
+    release: prometheus-stack
+spec:
+  scrapeInterval: 30s
+  staticConfigs:
+  - targets:
+    - 192.168.0.250:9100
+    - 192.168.0.251:9100
+    - 192.168.0.252:9100
+    - 192.168.0.104:9100
+    - 192.168.0.10:9100
